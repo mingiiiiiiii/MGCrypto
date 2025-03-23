@@ -1,0 +1,27 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+ColumnLimit: 0
+
+BreakBeforeBraces: Attach
+
+# 함수 정의
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackParameters: AlwaysOnePerLine
+
+# 함수 호출
+BinPackArguments: true
+
+PointerAlignment: Left
+SpaceBeforeParens: Never
+
+# 헤더파일 정렬 x
+SortIncludes: false
+
+# 전처리 지시문 들여쓰기
+IndentPPDirectives: BeforeHash
+
+# 짧은 if, else에서 괄호랑 엔터 안하기(?)
+AllowShortBlocksOnASingleLine: Never
