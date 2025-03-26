@@ -1,5 +1,5 @@
 /*
-https://github.com/openssl/openssl/blob/master/crypto/aes/aes_core.c
+ref : https://github.com/openssl/openssl/blob/master/crypto/aes/aes_core.c
 */
 
 #include <assert.h>
@@ -591,7 +591,7 @@ static const uint32_t rcon[] = {
 };
 // clang-format on
 
-/**
+/*
  * Expand the cipher key into the encryption key schedule.
  */
 int AES_set_encrypt_key(const unsigned char* userKey,
@@ -694,7 +694,7 @@ int AES_set_encrypt_key(const unsigned char* userKey,
     return 0;
 }
 
-/**
+/*
  * Expand the cipher key into the decryption key schedule.
  */
 int AES_set_decrypt_key(const unsigned char* userKey,
