@@ -3,7 +3,6 @@ ref : https://seed.kisa.or.kr/kisa/Board/20/detailView.do
 */
 
 #include "mg_lea.h"
-#include "lea_locl.h"
 
 #include <stdio.h>
 
@@ -49,7 +48,7 @@ static const unsigned int delta[8][36] = {
      0x57e5c409, 0xafcb8812, 0x5f971025, 0xbf2e204a, 0x7e5c4095, 0xfcb8812a, 0xf9710255, 0xf2e204ab,
      0xe5c40957, 0xcb8812af, 0x9710255f, 0x2e204abf}};
 
-void lea_set_key_generic(LEA_KEY* key,
+void lea_set_key_generic(mg_lea_key* key,
                          const unsigned char* mk,
                          unsigned int mk_len) {
     if(!key)
@@ -549,7 +548,7 @@ void lea_set_key_generic(LEA_KEY* key,
 
 void lea_encrypt(unsigned char* ct,
                  const unsigned char* pt,
-                 const LEA_KEY* key) {
+                 const mg_lea_key* key) {
     unsigned int X0, X1, X2, X3;
 
     const unsigned int* _pt = (const unsigned int*)pt;
@@ -676,7 +675,7 @@ void lea_encrypt(unsigned char* ct,
 
 void lea_decrypt(unsigned char* pt,
                  const unsigned char* ct,
-                 const LEA_KEY* key) {
+                 const mg_lea_key* key) {
     unsigned int X0, X1, X2, X3;
 
     unsigned int* _pt = (unsigned int*)pt;
@@ -799,4 +798,17 @@ void lea_decrypt(unsigned char* pt,
     _pt[1] = loadU32(X1);
     _pt[2] = loadU32(X2);
     _pt[3] = loadU32(X3);
+}
+
+int MG_LEA_Core(uint8_t* ct,
+                const uint8_t* pt,
+                const mg_lea_key* lea_key,
+                int dir) {
+    int ret = 0;
+    if(dir == MG_CIPHER_ENCRYPT_DIR)
+        ret = MG_LEA_Encrypt(ct, pt, lea_key);
+    else if(dir == MG_CIPHER_DECRYPT_DIR)
+        ret = MG_LEA_Decrypt(ct, pt, lea_key);
+
+    return ret;
 }

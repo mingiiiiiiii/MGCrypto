@@ -7,6 +7,8 @@ ref : https://github.com/openssl/openssl/blob/master/crypto/aes/aes_core.c
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <mg_aes.h>
+
 /*-
 Te0[x] = S [x].[02, 01, 01, 03];
 Te1[x] = S [x].[03, 02, 01, 01];
@@ -596,7 +598,7 @@ static const uint32_t rcon[] = {
  */
 int AES_set_encrypt_key(const unsigned char* userKey,
                         const int bits,
-                        AES_KEY* key) {
+                        mg_aes_key* key) {
 
     uint32_t* rk;
     int i = 0;
@@ -607,14 +609,14 @@ int AES_set_encrypt_key(const unsigned char* userKey,
     if(bits != 128 && bits != 192 && bits != 256)
         return -2;
 
-    rk = key->rd_key;
+    rk = key->rk;
 
     if(bits == 128) {
-        key->rounds = 10;
+        key->round = 10;
     } else if(bits == 192) {
-        key->rounds = 12;
+        key->round = 12;
     } else {
-        key->rounds = 14;
+        key->round = 14;
     }
 
     rk[0] = GETU32(userKey);
@@ -699,7 +701,7 @@ int AES_set_encrypt_key(const unsigned char* userKey,
  */
 int AES_set_decrypt_key(const unsigned char* userKey,
                         const int bits,
-                        AES_KEY* key) {
+                        mg_aes_key* key) {
 
     uint32_t* rk;
     int i, j, status;
@@ -711,10 +713,10 @@ int AES_set_decrypt_key(const unsigned char* userKey,
         return status;
     }
 
-    rk = key->rd_key;
+    rk = key->rk;
 
     /* invert the order of the round keys: */
-    for(i = 0, j = 4 * (key->rounds); i < j; i += 4, j -= 4) {
+    for(i = 0, j = 4 * (key->round); i < j; i += 4, j -= 4) {
         temp = rk[i];
         rk[i] = rk[j];
         rk[j] = temp;
@@ -729,7 +731,7 @@ int AES_set_decrypt_key(const unsigned char* userKey,
         rk[j + 3] = temp;
     }
     /* apply the inverse MixColumn transform to all round keys but the first and the last: */
-    for(i = 1; i < (key->rounds); i++) {
+    for(i = 1; i < (key->round); i++) {
         rk += 4;
         rk[0] =
             Td0[Te1[(rk[0] >> 24)] & 0xff] ^
@@ -755,19 +757,41 @@ int AES_set_decrypt_key(const unsigned char* userKey,
     return 0;
 }
 
+int32_t MG_AES_KeySetup(mg_aes_key* aes_key,
+                        const uint8_t* userKey,
+                        const int bits,
+                        const int dir) {
+    int32_t ret = 0;
+
+    switch(dir) {
+    case MG_CIPHER_ENCRYPT_DIR:
+        ret = AES_set_encrypt_key(userKey, bits, aes_key);
+        break;
+    case MG_CIPHER_DECRYPT_DIR:
+        ret = AES_set_decrypt_key(userKey, bits, aes_key);
+        break;
+    default:
+        break;
+    }
+
+    return ret;
+}
+
 /*
  * Encrypt a single block
  * in and out can overlap
  */
-void AES_encrypt(const unsigned char* in,
-                 unsigned char* out,
-                 const AES_KEY* key) {
+int32_t AES_encrypt(const unsigned char* in,
+                    unsigned char* out,
+                    const mg_aes_key* key) {
+
+    int32_t ret = 0;
 
     const uint32_t* rk;
     uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
     assert(in && out && key);
-    rk = key->rd_key;
+    rk = key->rk;
 
     /*
      * map byte array block to cipher state
@@ -781,7 +805,7 @@ void AES_encrypt(const unsigned char* in,
     /*
      * Nr - 1 full rounds:
      */
-    int32_t r = key->rounds >> 1;
+    int32_t r = key->round >> 1;
     for(;;) {
         t0 =
             Te0[(s0 >> 24)] ^
@@ -871,21 +895,25 @@ void AES_encrypt(const unsigned char* in,
         (Te1[(t2) & 0xff] & 0x000000ff) ^
         rk[3];
     PUTU32(out + 12, s3);
+
+    return ret;
 }
 
 /*
  * Decrypt a single block
  * in and out can overlap
  */
-void AES_decrypt(const unsigned char* in,
-                 unsigned char* out,
-                 const AES_KEY* key) {
+int32_t AES_decrypt(const unsigned char* in,
+                    unsigned char* out,
+                    const mg_aes_key* key) {
+
+    int32_t ret = 0;
 
     const uint32_t* rk;
     uint32_t s0, s1, s2, s3, t0, t1, t2, t3;
 
     assert(in && out && key);
-    rk = key->rd_key;
+    rk = key->rk;
 
     /*
      * map byte array block to cipher state
@@ -899,7 +927,7 @@ void AES_decrypt(const unsigned char* in,
     /*
      * Nr - 1 full rounds:
      */
-    int32_t r = key->rounds >> 1;
+    int32_t r = key->round >> 1;
     for(;;) {
         t0 =
             Td0[(s0 >> 24)] ^
@@ -989,4 +1017,20 @@ void AES_decrypt(const unsigned char* in,
         ((uint32_t)Td4[(t0) & 0xff]) ^
         rk[3];
     PUTU32(out + 12, s3);
+
+    return ret;
+}
+
+int32_t MG_AES_Core(uint8_t* out,
+                    const uint8_t* in,
+                    const mg_aes_key* aes_key,
+                    int dir) {
+    int32_t ret = 0;
+
+    if(dir == CSE_CIPHER_ENCRYPT_DIR)
+        ret = AES_encrypt(in, out, aes_key);
+    else if(dir == CSE_CIPHER_DECRYPT_DIR)
+        ret = AES_decrypt(in, out, aes_key);
+
+    return ret;
 }
