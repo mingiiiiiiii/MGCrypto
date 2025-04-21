@@ -1,6 +1,9 @@
 #ifndef MG_ARIA_H
 #define MG_ARIA_H
 
+#include <stdint.h>
+#include <mg_blockcipher.h>
+
 void DL(const unsigned char* i,
         unsigned char* o);
 
@@ -15,17 +18,27 @@ typedef struct {
 } mg_aria_key;
 
 int EncKeySetup(const unsigned char* w0,
-                unsigned char* e,
+                mg_aria_key* aria_key,
                 int keyBits);
 
 int DecKeySetup(const unsigned char* w0,
-                unsigned char* d,
+                mg_aria_key* aria_key,
                 int keyBits);
 
-void Crypt(const unsigned char* p,
-           int R,
-           const unsigned char* e,
-           unsigned char* c);
+int32_t Crypt(const unsigned char* p,
+              int R,
+              const unsigned char* e,
+              unsigned char* c);
+
+int32_t MG_ARIA_KeySetup(mg_aria_key* aria_key,
+                         const uint8_t* userKey,
+                         const int bits,
+                         const int dir);
+
+int32_t MG_ARIA_Core(uint8_t* out,
+                     const uint8_t* in,
+                     mg_aria_key* aria_key,
+                     const int dir);
 
 void printBlockOfLength(unsigned char* b,
                         int len);

@@ -1,22 +1,4 @@
 /*
- *
- *
- * ANSI-C code for ARIA version 1.0
- *
- * Reference code for ARIA
- *
- * 2005. 01. 17.
- *
- * Note:
- *    - Now we use the following interface:
- *      void Crypt(const unsigned char *plainText, int numberOfRounds, const unsigned char *roundKeys, unsigned char *cipherText);
- *      int EncKeySetup(const unsigned char *masterKey, unsigned char *roundKeys, int keyBits);
- *      int DecKeySetup(const unsigned char *masterKey, unsigned char *roundKeys, int keyBits);
- *    - EncKeySetup() and DecKeySetup() return the number of rounds.
- *
- */
-
-/*
 ref : https://seed.kisa.or.kr/kisa/Board/19/detailView.do
 */
 
@@ -290,10 +272,13 @@ int32_t MG_ARIA_KeySetup(mg_aria_key* aria_key,
 
 // Encryption and decryption rountine
 // p: plain text, e: round keys, c: ciphertext
-void Crypt(const unsigned char* p,
-           int R,
-           const unsigned char* e,
-           unsigned char* c) {
+int32_t Crypt(const unsigned char* p,
+              int R,
+              const unsigned char* e,
+              unsigned char* c) {
+
+    int32_t ret = 0;
+
     int i, j;
     unsigned char t[16];
 
@@ -312,6 +297,8 @@ void Crypt(const unsigned char* p,
     DL(c, t);
     for(j = 0; j < 16; j++)
         c[j] = e[j] ^ t[j];
+
+    return ret;
 }
 
 int32_t MG_ARIA_Core(uint8_t* out,
