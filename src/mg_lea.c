@@ -48,9 +48,10 @@ static const unsigned int delta[8][36] = {
      0x57e5c409, 0xafcb8812, 0x5f971025, 0xbf2e204a, 0x7e5c4095, 0xfcb8812a, 0xf9710255, 0xf2e204ab,
      0xe5c40957, 0xcb8812af, 0x9710255f, 0x2e204abf}};
 
-int32_t MG_LEA_KeySetup(mg_lea_key* lea_key,
-                        const unsigned char* mk,
-                        unsigned int mk_len) {
+// mk_len = 16, 24, 32 (bytes)
+int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* lea_key,
+                               const unsigned char* mk,
+                               unsigned int mk_len) {
 
     int32_t ret = 0;
 
@@ -807,15 +808,22 @@ void lea_decrypt(unsigned char* pt,
     _pt[3] = loadU32(X3);
 }
 
-int MG_LEA_Core(uint8_t* ct,
-                const uint8_t* pt,
-                const mg_lea_key* lea_key,
-                int dir) {
+int32_t MG_Crypto_LEA_Encrypt(uint8_t* ct,
+                              const uint8_t* pt,
+                              const mg_lea_key* lea_key) {
     int ret = 0;
-    if(dir == MG_CIPHER_ENCRYPT_DIR)
-        ret = MG_LEA_Encrypt(ct, pt, lea_key);
-    else if(dir == MG_CIPHER_DECRYPT_DIR)
-        ret = MG_LEA_Decrypt(ct, pt, lea_key);
+
+    ret = MG_LEA_Encrypt(ct, pt, lea_key);
+
+    return ret;
+}
+
+int32_t MG_Crypto_LEA_Decrypt(uint8_t* ct,
+                              const uint8_t* pt,
+                              const mg_lea_key* lea_key) {
+    int ret = 0;
+
+    ret = MG_LEA_Decrypt(ct, pt, lea_key);
 
     return ret;
 }

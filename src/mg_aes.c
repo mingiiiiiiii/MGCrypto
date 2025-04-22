@@ -757,17 +757,18 @@ int AES_set_decrypt_key(const unsigned char* userKey,
     return 0;
 }
 
-int32_t MG_AES_KeySetup(mg_aes_key* aes_key,
-                        const uint8_t* userKey,
-                        const int bits,
-                        const int dir) {
+// bits = 128, 192, 256
+int32_t MG_Crypto_AES_KeySetup(mg_aes_key* aes_key,
+                               const uint8_t* userKey,
+                               const int bits,
+                               const int dir) {
     int32_t ret = 0;
 
     switch(dir) {
-    case MG_CIPHER_ENCRYPT_DIR:
+    case MG_CRYPTO_DIR_ENCRYPT:
         ret = AES_set_encrypt_key(userKey, bits, aes_key);
         break;
-    case MG_CIPHER_DECRYPT_DIR:
+    case MG_CRYPTO_DIR_DECRYPT:
         ret = AES_set_decrypt_key(userKey, bits, aes_key);
         break;
     default:
@@ -1021,16 +1022,22 @@ int32_t AES_decrypt(const unsigned char* in,
     return ret;
 }
 
-int32_t MG_AES_Core(uint8_t* out,
-                    const uint8_t* in,
-                    const mg_aes_key* aes_key,
-                    int dir) {
+int32_t MG_Crypto_AES_Encrypt(uint8_t* out,
+                              const uint8_t* in,
+                              const mg_aes_key* aes_key) {
     int32_t ret = 0;
 
-    if(dir == MG_CIPHER_ENCRYPT_DIR)
-        ret = AES_encrypt(in, out, aes_key);
-    else if(dir == MG_CIPHER_DECRYPT_DIR)
-        ret = AES_decrypt(in, out, aes_key);
+    ret = AES_encrypt(in, out, aes_key);
+
+    return ret;
+}
+
+int32_t MG_Crypto_AES_Decrypt(uint8_t* out,
+                              const uint8_t* in,
+                              const mg_aes_key* aes_key) {
+    int32_t ret = 0;
+
+    ret = AES_decrypt(in, out, aes_key);
 
     return ret;
 }

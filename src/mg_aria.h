@@ -30,15 +30,18 @@ int32_t Crypt(const unsigned char* p,
               const unsigned char* e,
               unsigned char* c);
 
-int32_t MG_ARIA_KeySetup(mg_aria_key* aria_key,
-                         const uint8_t* userKey,
-                         const int bits,
-                         const int dir);
+int32_t MG_Crypto_ARIA_KeySetup(mg_aria_key* aria_key,
+                                const uint8_t* userKey,
+                                const uint32_t bits,
+                                const int32_t dir);
 
-int32_t MG_ARIA_Core(uint8_t* out,
-                     const uint8_t* in,
-                     mg_aria_key* aria_key,
-                     const int dir);
+int32_t MG_Crypto_ARIA_Encrypt(uint8_t* out,
+                               const uint8_t* in,
+                               mg_aria_key* aria_key);
+
+int32_t MG_Crypto_ARIA_Decrypt(uint8_t* out,
+                               const uint8_t* in,
+                               mg_aria_key* aria_key);
 
 void printBlockOfLength(unsigned char* b,
                         int len);

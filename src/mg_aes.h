@@ -35,14 +35,17 @@ int32_t AES_decrypt(const unsigned char* in,
                     unsigned char* out,
                     const mg_aes_key* aes_key);
 
-int32_t MG_AES_KeySetup(mg_aes_key* aes_key,
-                        const uint8_t* userKey,
-                        const int bits,
-                        const int dir);
+int32_t MG_Crypto_AES_KeySetup(mg_aes_key* aes_key,
+                               const uint8_t* userKey,
+                               const int bits,
+                               const int dir);
 
-int32_t MG_AES_Core(uint8_t* out,
-                    const uint8_t* in,
-                    const mg_aes_key* aes_key,
-                    int dir);
+int32_t MG_Crypto_AES_Encrypt(uint8_t* out,
+                              const uint8_t* in,
+                              const mg_aes_key* aes_key);
+
+int32_t MG_Crypto_AES_Decrypt(uint8_t* out,
+                              const uint8_t* in,
+                              const mg_aes_key* aes_key);
 
 #endif // MG_AES_H

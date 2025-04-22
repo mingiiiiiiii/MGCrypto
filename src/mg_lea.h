@@ -16,9 +16,9 @@ typedef struct {
     uint32_t round; // 24, 28, 32
 } mg_lea_key;
 
-void MG_LEA_KeySetup(mg_lea_key* key,
-                     const unsigned char* mk,
-                     unsigned int mk_len);
+int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* key,
+                               const uint8_t* mk,
+                               uint32_t mk_len);
 
 void lea_encrypt(unsigned char* ct,
                  const unsigned char* pt,
@@ -28,9 +28,12 @@ void lea_decrypt(unsigned char* pt,
                  const unsigned char* ct,
                  const mg_lea_key* key);
 
-int MG_LEA_Core(uint8_t* ct,
-                const uint8_t* pt,
-                const mg_lea_key* lea_key,
-                int dir);
+int32_t MG_Crypto_LEA_Encrypt(uint8_t* ct,
+                              const uint8_t* pt,
+                              const mg_lea_key* lea_key);
+
+int32_t MG_Crypto_LEA_Decrypt(uint8_t* pt,
+                              const uint8_t* ct,
+                              const mg_lea_key* lea_key);
 
 #endif // MG_LEA_H

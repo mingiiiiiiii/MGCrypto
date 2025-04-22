@@ -250,17 +250,17 @@ int DecKeySetup(const unsigned char* w0,
 }
 
 // bits = keyBits = 128, 192, 256
-int32_t MG_ARIA_KeySetup(mg_aria_key* aria_key,
-                         const uint8_t* userKey,
-                         const int bits,
-                         const int dir) {
+int32_t MG_Crypto_ARIA_KeySetup(mg_aria_key* aria_key,
+                                const uint8_t* userKey,
+                                const int bits,
+                                const int dir) {
     int32_t ret = 0;
 
     switch(dir) {
-    case MG_CIPHER_ENCRYPT_DIR:
+    case MG_CRYPTO_DIR_ENCRYPT:
         ret = EncKeySetup(userKey, aria_key, bits);
         break;
-    case MG_CIPHER_DECRYPT_DIR:
+    case MG_CRYPTO_DIR_DECRYPT:
         ret = DecKeySetup(userKey, aria_key, bits);
         break;
     default:
@@ -301,16 +301,24 @@ int32_t Crypt(const unsigned char* p,
     return ret;
 }
 
-int32_t MG_ARIA_Core(uint8_t* out,
-                     const uint8_t* in,
-                     mg_aria_key* aria_key,
-                     const int dir) {
+int32_t MG_Crypto_ARIA_Encrypt(uint8_t* out,
+                               const uint8_t* in,
+                               mg_aria_key* aria_key) {
     int32_t ret = 0;
 
-    if(dir == MG_CIPHER_ENCRYPT_DIR)
-        ret = Crypt(in, aria_key->round, aria_key->rk, out);
-    else if(dir == MG_CIPHER_DECRYPT_DIR)
-        ret = Crypt(in, aria_key->round, aria_key->rk, out);
+    // Encryption
+    ret = Crypt(in, aria_key->round, aria_key->rk, out);
+
+    return ret;
+}
+
+int32_t MG_Crypto_ARIA_Decrypt(uint8_t* out,
+                               const uint8_t* in,
+                               mg_aria_key* aria_key) {
+    int32_t ret = 0;
+
+    // Decryption
+    ret = Crypt(in, aria_key->round, aria_key->rk, out);
 
     return ret;
 }
