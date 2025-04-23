@@ -554,9 +554,12 @@ int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* lea_key,
     lea_key->round = (mk_len >> 1) + 16;
 }
 
-void lea_encrypt(unsigned char* ct,
-                 const unsigned char* pt,
-                 const mg_lea_key* key) {
+int32_t lea_encrypt(unsigned char* ct,
+                    const unsigned char* pt,
+                    const mg_lea_key* key) {
+
+    int32_t ret = 0;
+
     unsigned int X0, X1, X2, X3;
 
     const unsigned int* _pt = (const unsigned int*)pt;
@@ -679,11 +682,18 @@ void lea_encrypt(unsigned char* ct,
     _ct[1] = loadU32(X1);
     _ct[2] = loadU32(X2);
     _ct[3] = loadU32(X3);
+
+    ret = MG_SUCCESS;
+
+    return ret;
 }
 
-void lea_decrypt(unsigned char* pt,
-                 const unsigned char* ct,
-                 const mg_lea_key* key) {
+int32_t lea_decrypt(unsigned char* pt,
+                    const unsigned char* ct,
+                    const mg_lea_key* key) {
+
+    int32_t ret = 0;
+
     unsigned int X0, X1, X2, X3;
 
     unsigned int* _pt = (unsigned int*)pt;
@@ -806,6 +816,10 @@ void lea_decrypt(unsigned char* pt,
     _pt[1] = loadU32(X1);
     _pt[2] = loadU32(X2);
     _pt[3] = loadU32(X3);
+
+    ret = MG_SUCCESS;
+
+    return ret;
 }
 
 int32_t MG_Crypto_LEA_Encrypt(uint8_t* ct,

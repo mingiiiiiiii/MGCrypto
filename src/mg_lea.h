@@ -20,11 +20,11 @@ int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* key,
                                const uint8_t* mk,
                                uint32_t mk_len);
 
-void lea_encrypt(unsigned char* ct,
+int32_t lea_encrypt(unsigned char* ct,
                  const unsigned char* pt,
                  const mg_lea_key* key);
 
-void lea_decrypt(unsigned char* pt,
+int32_t lea_decrypt(unsigned char* pt,
                  const unsigned char* ct,
                  const mg_lea_key* key);
 

@@ -85,11 +85,11 @@ int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
 //     return ret;
 // }
 
-int32_t MG_Crypto_Block_ECB(mg_cipher_ctx* ctx,
-                            const uint8_t* in,
-                            const uint32_t in_len,
-                            uint8_t* out,
-                            uint32_t* out_len) {
+int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len) {
     int32_t ret = 0;
 
     uint32_t i = 0;
