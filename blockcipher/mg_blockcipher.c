@@ -161,6 +161,51 @@ int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
     return ret;
 }
 
+// buf를 입력받아 패딩 처리 후 패딩 길이 반환
+// ZERO 패딩 -> buf_len이 0이라면 추가로 안해도 됨
+// ONEZERO 패딩 -> buf_len이 0이라면 추가 블럭에 패딩해야함
+// PKCS 패딩 -> buf_len이 0이라면 추가 블럭에 패딩해야함
+int32_t MG_Crypto_BlockCipher_Padding(uint8_t* buf,
+                                      const uint32_t buf_len,
+                                      const uint32_t block_len,
+                                      const uint32_t paddingID) {
+
+    int i, padding_len;
+    padding_len = block_len - buf_len; // 패딩해야 할 byte 수
+
+    // Encrypt_Update의 구조 상 buf_len = 0인 경우, 혹은 아닌 경우만 존재
+    // buf_len = 0인 경우 -> padding_len = block_len
+    switch(paddingID) {
+    case MG_CRYPTO_PADDING_NO:
+        padding_len = 0; // 패딩 없음
+        break;
+    case MG_CRYPTO_PADDING_ZERO:
+        if(buf_len == 0) {   // 평문 길이가 블록의 배수인 경우
+            padding_len = 0; // 패딩 없음
+        } else {
+            for(i = 0; i < padding_len; i++) {
+                buf[buf_len + i] = 0x00; // 0으로 패딩
+            }
+        }
+        break;
+    case MG_CRYPTO_PADDING_ONEZERO:
+        buf[buf_len] = 0x80; // 1로 패딩
+        for(i = 1; i < padding_len; i++) {
+            buf[buf_len + i] = 0x00; // 0으로 패딩
+        }
+        break;
+    case MG_CRYPTO_PADDING_PKCS:
+        for(i = 0; i < padding_len; i++) {
+            buf[buf_len + i] = padding_len; // 패딩 길이로 패딩
+
+            return MG_SUCCESS;
+        }
+        break;
+    }
+
+    return padding_len; // 패딩 길이 리턴
+}
+
 // Init 단계 -> 파라미터 설정, 키 설정
 int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
                               const uint8_t* key,
@@ -246,51 +291,6 @@ int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
 
 end:
     return ret;
-}
-
-// buf를 입력받아 패딩 처리 후 패딩 길이 반환
-// ZERO 패딩 -> buf_len이 0이라면 추가로 안해도 됨
-// ONEZERO 패딩 -> buf_len이 0이라면 추가 블럭에 패딩해야함
-// PKCS 패딩 -> buf_len이 0이라면 추가 블럭에 패딩해야함
-int32_t MG_Crypto_BlockCipher_Padding(uint8_t* buf,
-                                      const uint32_t buf_len,
-                                      const uint32_t block_len,
-                                      const uint32_t paddingID) {
-
-    int i, padding_len;
-    padding_len = block_len - buf_len; // 패딩해야 할 byte 수
-
-    // Encrypt_Update의 구조 상 buf_len = 0인 경우, 혹은 아닌 경우만 존재
-    // buf_len = 0인 경우 -> padding_len = block_len
-    switch(paddingID) {
-    case MG_CRYPTO_PADDING_NO:
-        padding_len = 0; // 패딩 없음
-        break;
-    case MG_CRYPTO_PADDING_ZERO:
-        if(buf_len == 0) {   // 평문 길이가 블록의 배수인 경우
-            padding_len = 0; // 패딩 없음
-        } else {
-            for(i = 0; i < padding_len; i++) {
-                buf[buf_len + i] = 0x00; // 0으로 패딩
-            }
-        }
-        break;
-    case MG_CRYPTO_PADDING_ONEZERO:
-        buf[buf_len] = 0x80; // 1로 패딩
-        for(i = 1; i < padding_len; i++) {
-            buf[buf_len + i] = 0x00; // 0으로 패딩
-        }
-        break;
-    case MG_CRYPTO_PADDING_PKCS:
-        for(i = 0; i < padding_len; i++) {
-            buf[buf_len + i] = padding_len; // 패딩 길이로 패딩
-
-            return MG_SUCCESS;
-        }
-        break;
-    }
-
-    return padding_len; // 패딩 길이 리턴
 }
 
 // Final 단계 -> 남은 블록 처리 및 패딩
@@ -467,6 +467,7 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
                                uint32_t* out_len) {
     int32_t ret = 0;
     int32_t padding_len = 0;
+    uint32_t i;
 
     if(ctx == NULL || out == NULL || out_len == NULL) {
         return MG_FAIL; // todo: change error code
@@ -475,10 +476,12 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
     // onezero, pkcs만 처리해주면 됨
     switch(ctx->param.paddingID) {
     case MG_CRYPTO_PADDING_ONEZERO:
-        while(out[*out_len - 1] == 0x80) {
-            padding_len++; // 패딩 길이 구하기
+        i = *out_len - 1;
+        while(out[i--] == 0x00) {
+            padding_len++; // 패딩 길이 구하기 (0x80 나오기 전엔 모두 0x00)
         }
-        *out_len -= padding_len; // 패딩 길이만큼 out_len 줄이기
+        *out_len -= (padding_len + 1); // 패딩 길이만큼 out_len 줄이기 (0x80도 없애줘야 하므로 +1)
+        // todo : i가 음수가 되는 경우는 에러 처리
         break;
     case MG_CRYPTO_PADDING_PKCS:
         padding_len = out[*out_len - 1]; // 패딩 길이
@@ -486,6 +489,7 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
         break;
     }
 
+end:
     return ret;
 }
 

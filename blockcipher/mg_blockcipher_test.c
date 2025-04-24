@@ -74,6 +74,8 @@ void test_AES_ECB() {
         pt_len = 0;
         ct_len = 0;
         key_len = 0;
+        pt_out_len = 0;
+        ct_out_len = 0;
         memset(key, 0, sizeof(key));
         memset(pt, 0, sizeof(pt));
         memset(ct, 0, sizeof(ct));
@@ -103,13 +105,25 @@ void test_AES_ECB() {
         param.paddingID = MG_CRYPTO_PADDING_NO;
 
         // 암호화 수행
-        MG_Crypto_Encrypt(key, key_len, MG_CRYPTO_ID_AES, &param, pt, pt_len, ct_res, &out_len);
-        pt_out_len = out_len;
+        ret = MG_Crypto_Encrypt(key, key_len, MG_CRYPTO_ID_AES, &param, pt, pt_len, ct_res, &out_len);
+        if(ret != 0) {
+            fprintf(stderr, "Encryption failed\n");
+            fclose(fp_req);
+            fclose(fp_rsp);
+            exit(EXIT_FAILURE);
+        }
+        ct_out_len = out_len;
 
         // 복호화 수행
         out_len = 0; // 유효 데이터 길이 초기화
-        MG_Crypto_Decrypt(key, key_len, MG_CRYPTO_ID_AES, &param, ct, ct_len, pt_res, &out_len);
-        ct_out_len = out_len;
+        ret = MG_Crypto_Decrypt(key, key_len, MG_CRYPTO_ID_AES, &param, ct, ct_len, pt_res, &out_len);
+        if(ret != 0) {
+            fprintf(stderr, "Decryption failed\n");
+            fclose(fp_req);
+            fclose(fp_rsp);
+            exit(EXIT_FAILURE);
+        }
+        pt_out_len = out_len;
 
         ret = fprintf(fp_rsp, "KEY = ");
         for(int i = 0; i < key_len; i++) {
