@@ -486,7 +486,6 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
         break;
     }
 
-end:
     return ret;
 }
 
@@ -515,19 +514,19 @@ int32_t MG_Crypto_Decrypt(const uint8_t* key,
     uint32_t dir = MG_CRYPTO_DIR_DECRYPT;
 
     // 1) Init
-    ret = MG_Crypto_EncryptInit(&ctx, key, key_len, algID, dir, param);
+    ret = MG_Crypto_DecryptInit(&ctx, key, key_len, algID, dir, param);
     if(ret != MG_SUCCESS) {
         goto end;
     }
 
     // 2) Update
-    ret = MG_Crypto_EncryptUpdate(&ctx, in, in_len, out, out_len);
+    ret = MG_Crypto_DecryptUpdate(&ctx, in, in_len, out, out_len);
     if(ret != MG_SUCCESS) {
         goto end;
     }
 
     // 3) Final (패딩 + 남은 블록 처리)
-    ret = MG_Crypto_EncryptFinal(&ctx, out, out_len);
+    ret = MG_Crypto_DecryptFinal(&ctx, out, out_len);
     if(ret != MG_SUCCESS) {
         goto end;
     }
