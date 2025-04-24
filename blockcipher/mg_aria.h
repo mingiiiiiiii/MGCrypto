@@ -2,7 +2,7 @@
 #define MG_ARIA_H
 
 #include <stdint.h>
-#include <mg_blockcipher.h>
+#include "mg_crypto.h"
 
 void DL(const unsigned char* i,
         unsigned char* o);

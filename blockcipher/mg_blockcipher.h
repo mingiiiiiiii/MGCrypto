@@ -7,10 +7,11 @@
 #include <assert.h>
 #include <string.h>
 
-#include <mg_aes.h>
-#include <mg_aria.h>
-#include <mg_lea.h>
-#include <mg_crypto.h>
+#include "mg_aes.h"
+#include "mg_aria.h"
+#include "mg_lea.h"
+#include "mg_crypto.h"
+#include "mg_common.h"
 
 typedef struct {
     uint8_t iv[MG_CRYPTO_MAX_IV_SIZE]; // maximum size of IV
@@ -78,5 +79,40 @@ int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
 int32_t MG_Crypto_EncryptFinal(mg_cipher_ctx* ctx,
                                uint8_t* out,
                                uint32_t* out_len);
+
+int32_t MG_Crypto_Encrypt(const uint8_t* key,
+                          uint32_t key_len,
+                          uint32_t algID,
+                          const mg_cipher_param* param,
+                          const uint8_t* in,
+                          uint32_t in_len,
+                          uint8_t* out,
+                          uint32_t* out_len);
+
+int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
+                              const uint8_t* key,
+                              const uint32_t key_len,
+                              const uint32_t algID,
+                              const uint32_t dir,
+                              const mg_cipher_param* param);
+
+int32_t MG_Crypto_DecryptUpdate(mg_cipher_ctx* ctx,
+                                const uint8_t* in,
+                                const uint32_t in_len,
+                                uint8_t* out,
+                                uint32_t* out_len);
+
+int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
+                               uint8_t* out,
+                               uint32_t* out_len);
+
+int32_t MG_Crypto_Decrypt(const uint8_t* key,
+                          uint32_t key_len,
+                          uint32_t algID,
+                          const mg_cipher_param* param,
+                          const uint8_t* in,
+                          uint32_t in_len,
+                          uint8_t* out,
+                          uint32_t* out_len);
 
 #endif // MG_BLOCKCIPHER_H

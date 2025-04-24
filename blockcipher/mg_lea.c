@@ -547,11 +547,12 @@ int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* lea_key,
         break;
 
     default:
+        // mk_len = 16, 24, 32
+        lea_key->round = (mk_len >> 1) + 16;
         return ret;
     }
 
-    // mk_len = 16, 24, 32
-    lea_key->round = (mk_len >> 1) + 16;
+    return ret;
 }
 
 int32_t lea_encrypt(unsigned char* ct,
@@ -827,7 +828,7 @@ int32_t MG_Crypto_LEA_Encrypt(uint8_t* ct,
                               const mg_lea_key* lea_key) {
     int ret = 0;
 
-    ret = MG_LEA_Encrypt(ct, pt, lea_key);
+    ret = lea_encrypt(ct, pt, lea_key);
 
     return ret;
 }
@@ -837,7 +838,7 @@ int32_t MG_Crypto_LEA_Decrypt(uint8_t* ct,
                               const mg_lea_key* lea_key) {
     int ret = 0;
 
-    ret = MG_LEA_Decrypt(ct, pt, lea_key);
+    ret = lea_decrypt(ct, pt, lea_key);
 
     return ret;
 }

@@ -299,8 +299,8 @@ int32_t MG_Crypto_EncryptFinal(mg_cipher_ctx* ctx,
                                uint32_t* out_len) {
     int32_t ret = 0;
     int32_t padding_len;
-    int32_t tmp[16] = {0}; // 패딩 처리할 때 사용
-    int32_t tmp_len = 0;
+    uint8_t tmp[16] = {0}; // 패딩 처리할 때 사용
+    uint32_t tmp_len = 0;
 
     if(ctx == NULL || out == NULL || out_len == NULL) {
         return MG_FAIL; // todo: change error code
@@ -343,7 +343,7 @@ end:
 /// @param key           : 비밀키 버퍼
 /// @param key_len       : 비밀키 길이 (byte)
 /// @param algID         : 알고리즘 ID (MG_CRYPTO_ID_…)
-/// @param dir           : MG_Crypto_ENCRYPT (또는 DECRYPT)
+/// @param dir           : MG_Crypto_ENCRYPT
 /// @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
 /// @param in            : 평문 버퍼
 /// @param in_len        : 평문 길이 (byte)
@@ -353,35 +353,181 @@ end:
 int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t key_len,
                           uint32_t algID,
-                          uint32_t dir,
                           const mg_cipher_param* param,
                           const uint8_t* in,
                           uint32_t in_len,
                           uint8_t* out,
                           uint32_t* out_len) {
+    int32_t ret = 0;
+
     mg_cipher_ctx ctx;
-    int32_t ret;
+    uint32_t dir = MG_CRYPTO_DIR_ENCRYPT;
 
     // 1) Init
-    ret = MG_Crypto_EncryptInit(&ctx,
-                                key, key_len,
-                                algID, dir,
-                                param);
+    ret = MG_Crypto_EncryptInit(&ctx, key, key_len, algID, dir, param);
     if(ret != MG_SUCCESS) {
         goto end;
     }
 
     // 2) Update
-    ret = MG_Crypto_EncryptUpdate(&ctx,
-                                  in, in_len,
-                                  out, out_len);
+    ret = MG_Crypto_EncryptUpdate(&ctx, in, in_len, out, out_len);
     if(ret != MG_SUCCESS) {
         goto end;
     }
 
     // 3) Final (패딩 + 남은 블록 처리)
-    ret = MG_Crypto_EncryptFinal(&ctx,
-                                 out, out_len);
+    ret = MG_Crypto_EncryptFinal(&ctx, out, out_len);
+    if(ret != MG_SUCCESS) {
+        goto end;
+    }
+
+end:
+    memset(&ctx, 0, sizeof(mg_cipher_ctx)); // ctx 초기화
+    return ret;
+}
+
+// Init 단계 -> 파라미터 설정, 키 설정
+int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
+                              const uint8_t* key,
+                              const uint32_t key_len,
+                              const uint32_t algID,
+                              const uint32_t dir,
+                              const mg_cipher_param* param) {
+    int32_t ret = 0;
+
+    if(ctx == NULL || key == NULL || param == NULL) {
+        return MG_FAIL; // todo: change error code
+    }
+    // if(key_len > 32) {
+    //     return MG_FAIL; // todo: change error code
+    // }
+    // if(key_len == 0) {
+    //     return MG_FAIL; // todo: change error code
+    // }
+
+    memset(ctx, 0, sizeof(mg_cipher_ctx)); // ctx 초기화
+
+    // mg_cipher_ctx 구조체 값 설정
+    memcpy(&ctx->param, param, sizeof(mg_cipher_param));
+    ctx->algID = algID;
+    ctx->dir = dir;
+    ctx->block_len = 16; // AES, ARIA, LEA는 모두 16byte
+
+    memcpy(ctx->key, key, key_len); // key 복사, 길이 설정
+    ctx->key_len = key_len;
+    uint32_t key_bit = key_len * 8; // key_len is byte -> ARIA, AES에서 bit로 변환해서 사용
+
+    memset(ctx->buf, 0, sizeof(ctx->buf)); // buffer 초기화 (이거 sizeof(ctx->buf) 얼만지 확인해보기)
+    ctx->buf_len = 0;                      // buffer 초기화
+
+    switch(algID) { // algID에 따라 라운드 키 생성
+    case MG_CRYPTO_ID_ARIA:
+        ret = MG_Crypto_ARIA_KeySetup(&ctx->key_ctx.aria, key, key_bit, dir);
+        break;
+    case MG_CRYPTO_ID_LEA:
+        ret = MG_Crypto_LEA_KeySetup(&ctx->key_ctx.lea, key, key_len);
+        break;
+    case MG_CRYPTO_ID_AES:
+        ret = MG_Crypto_AES_KeySetup(&ctx->key_ctx.aes, key, key_bit, dir);
+        break;
+    default:
+        ret = MG_FAIL; // todo: change error code
+        break;
+    }
+    return ret;
+}
+
+// Update 단계 -> 실제 암호화 수행
+int32_t MG_Crypto_DecryptUpdate(mg_cipher_ctx* ctx,
+                                const uint8_t* in,
+                                const uint32_t in_len,
+                                uint8_t* out,
+                                uint32_t* out_len) {
+
+    int32_t ret = 0;
+
+    if(ctx == NULL || in == NULL || out == NULL || out_len == NULL) {
+        ret = MG_FAIL; // todo: change error code
+        goto end;
+    }
+
+    ret = MG_Crypto_BlockCipher_Mode(ctx, in, in_len, out, out_len);
+    if(ret != MG_SUCCESS) {
+        *out_len = 0; // 복호화 실패 시 out_len 초기화
+        goto end;
+    }
+
+end:
+    return ret;
+}
+
+// Final 단계 -> 마지막 블록 패딩 제거
+int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
+                               uint8_t* out,
+                               uint32_t* out_len) {
+    int32_t ret = 0;
+    int32_t padding_len = 0;
+
+    if(ctx == NULL || out == NULL || out_len == NULL) {
+        return MG_FAIL; // todo: change error code
+    }
+
+    // onezero, pkcs만 처리해주면 됨
+    switch(ctx->param.paddingID) {
+    case MG_CRYPTO_PADDING_ONEZERO:
+        while(out[*out_len - 1] == 0x80) {
+            padding_len++; // 패딩 길이 구하기
+        }
+        *out_len -= padding_len; // 패딩 길이만큼 out_len 줄이기
+        break;
+    case MG_CRYPTO_PADDING_PKCS:
+        padding_len = out[*out_len - 1]; // 패딩 길이
+        *out_len -= padding_len;         // 패딩 길이만큼 out_len 줄이기
+        break;
+    }
+
+end:
+    return ret;
+}
+
+/// @brief 1회성 복호화 helper: init→update→final을 한 번에 호출
+/// @param key           : 비밀키 버퍼
+/// @param key_len       : 비밀키 길이 (byte)
+/// @param algID         : 알고리즘 ID (MG_CRYPTO_ID_…)
+/// @param dir           : MG_Crypto_Decrypt
+/// @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
+/// @param in            : 암호문 버퍼
+/// @param in_len        : 암호문 길이 (byte)
+/// @param out           : 복호화된 평문 출력 버퍼
+/// @param out_len       : [out] 실제 복호화되어 출력된 평문 길이 (byte)
+/// @return MG_SUCCESS (0) 이외는 실패 코드
+int32_t MG_Crypto_Decrypt(const uint8_t* key,
+                          uint32_t key_len,
+                          uint32_t algID,
+                          const mg_cipher_param* param,
+                          const uint8_t* in,
+                          uint32_t in_len,
+                          uint8_t* out,
+                          uint32_t* out_len) {
+    int32_t ret = 0;
+
+    mg_cipher_ctx ctx;
+    uint32_t dir = MG_CRYPTO_DIR_DECRYPT;
+
+    // 1) Init
+    ret = MG_Crypto_EncryptInit(&ctx, key, key_len, algID, dir, param);
+    if(ret != MG_SUCCESS) {
+        goto end;
+    }
+
+    // 2) Update
+    ret = MG_Crypto_EncryptUpdate(&ctx, in, in_len, out, out_len);
+    if(ret != MG_SUCCESS) {
+        goto end;
+    }
+
+    // 3) Final (패딩 + 남은 블록 처리)
+    ret = MG_Crypto_EncryptFinal(&ctx, out, out_len);
     if(ret != MG_SUCCESS) {
         goto end;
     }

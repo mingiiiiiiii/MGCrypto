@@ -1,5 +1,5 @@
-#ifndef _MG_H_
-#define _MG_H_
+#ifndef MG_CRYPTO_H
+#define MG_CRYPTO_H
 
 #include <stdint.h>
 
@@ -28,4 +28,4 @@
 #define MG_CRYPTO_PADDING_ONEZERO 2 // 패딩 최상단 1 이후 0
 #define MG_CRYPTO_PADDING_PKCS 3    // 패딩 필요한 블록 수 만큼, 3 블록 필요한 경우 03 03 03 03 패딩, 패딩이 필요없는 경우 패딩 방법을 표시하기 위해 10 10 10 10 10... 추가
 
-#endif // _MG_H_
+#endif // MG_CRYPTO_H

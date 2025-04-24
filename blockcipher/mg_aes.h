@@ -3,7 +3,7 @@
 #define MG_AES_H
 
 #include <stdint.h>
-#include <mg_blockcipher.h>
+#include "mg_crypto.h"
 
 #define GETU32(pt) (((uint32_t)(pt)[0] << 24) ^ ((uint32_t)(pt)[1] << 16) ^ ((uint32_t)(pt)[2] << 8) ^ ((uint32_t)(pt)[3]))
 #define PUTU32(ct, st)                    \

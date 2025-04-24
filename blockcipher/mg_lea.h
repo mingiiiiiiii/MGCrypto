@@ -2,7 +2,7 @@
 #define MG_LEA_H
 
 #include <stdint.h>
-#include <mg_blockcipher.h>
+#include "mg_crypto.h"
 
 #define ROR(W, i) (((W) >> (i)) | ((W) << (32 - (i))))
 #define ROL(W, i) (((W) << (i)) | ((W) >> (32 - (i))))
@@ -21,12 +21,12 @@ int32_t MG_Crypto_LEA_KeySetup(mg_lea_key* key,
                                uint32_t mk_len);
 
 int32_t lea_encrypt(unsigned char* ct,
-                 const unsigned char* pt,
-                 const mg_lea_key* key);
+                    const unsigned char* pt,
+                    const mg_lea_key* key);
 
 int32_t lea_decrypt(unsigned char* pt,
-                 const unsigned char* ct,
-                 const mg_lea_key* key);
+                    const unsigned char* ct,
+                    const mg_lea_key* key);
 
 int32_t MG_Crypto_LEA_Encrypt(uint8_t* ct,
                               const uint8_t* pt,

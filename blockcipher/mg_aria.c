@@ -252,8 +252,8 @@ int DecKeySetup(const unsigned char* w0,
 // bits = keyBits = 128, 192, 256
 int32_t MG_Crypto_ARIA_KeySetup(mg_aria_key* aria_key,
                                 const uint8_t* userKey,
-                                const int bits,
-                                const int dir) {
+                                const uint32_t bits,
+                                const int32_t dir) {
     int32_t ret = 0;
 
     switch(dir) {

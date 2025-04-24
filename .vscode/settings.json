@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "mg_common.h": "c",
+        "mg_blockcipher.h": "c",
+        "stdint.h": "c"
+    }
+}
