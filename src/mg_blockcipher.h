@@ -29,12 +29,54 @@ typedef struct {
     mg_cipher_param param; // param 구조체 (IV, mode, padding)
     uint32_t algID;        // 무슨 알고리즘 사용하는지 (LEA,ARIA,HIGHT)
     uint32_t dir;          // MG_Crypto_ENCRYPT/DECRYPT
-    uint32_t block_size;   // 알고리즘의 블록 크기(byte수)
+    uint32_t block_len;    // 알고리즘의 블록 크기(len) (byte수)
     key_ctx_t key_ctx;     // 알고리즘에 맞는 키 구조체
     uint8_t key[32];       // master key, byte는 최대 키 길이로 설정
     uint32_t key_len;      // 실제 key len (byte)
     uint8_t buf[16];       // 남은 byte 저장, maximum size of block
-    uint32_t buf_len;      // 실제 remain len (byte)
+    uint32_t buf_len;      // 실제 남은 데이터가 들어있는 len (byte)
 } mg_cipher_ctx;
+
+int32_t MG_Crypto_BlockCipher_Encrypt(mg_cipher_ctx* ctx,
+                                      const uint8_t* in,
+                                      uint8_t* out);
+
+int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
+                                      const uint8_t* in,
+                                      uint8_t* out);
+
+int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
+                                   const uint8_t* in,
+                                   const uint32_t in_len,
+                                   uint8_t* out,
+                                   uint32_t* out_len);
+
+int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len);
+
+int32_t MG_Crypto_BlockCipher_Padding(uint8_t* buf,
+                                      const uint32_t buf_len,
+                                      const uint32_t block_len,
+                                      const uint32_t paddingID);
+
+int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
+                              const uint8_t* key,
+                              const uint32_t key_len,
+                              const uint32_t algID,
+                              const uint32_t dir,
+                              const mg_cipher_param* param);
+
+int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
+                                const uint8_t* in,
+                                const uint32_t in_len,
+                                uint8_t* out,
+                                uint32_t* out_len);
+
+int32_t MG_Crypto_EncryptFinal(mg_cipher_ctx* ctx,
+                               uint8_t* out,
+                               uint32_t* out_len);
 
 #endif // MG_BLOCKCIPHER_H
