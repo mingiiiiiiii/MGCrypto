@@ -11,7 +11,6 @@
 #include "mg_aria.h"
 #include "mg_lea.h"
 #include "mg_crypto.h"
-#include "mg_common.h"
 
 typedef struct {
     uint8_t iv[16];     // maximum size of IV
@@ -59,6 +58,15 @@ int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
                                   uint32_t* out_len);
 
 int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len);
+
+void inc_counter(uint8_t* ctr,
+                 size_t len);
+
+int32_t MG_Crypto_BlockCipher_CTR(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
                                   const uint32_t in_len,
                                   uint8_t* out,

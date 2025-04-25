@@ -56,23 +56,11 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
-    case MG_CRYPTO_TEST_ID_KAT_AES128_CBC:
-        fp_req = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_AES;
-        mode_ID = MG_CRYPTO_MODE_CBC;
-        break;
     case MG_CRYPTO_TEST_ID_KAT_AES192_ECB:
         fp_req = fopen("./blockcipher/testvector/AES/AES192(ECB)KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/AES/AES192(ECB)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
-        break;
-    case MG_CRYPTO_TEST_ID_KAT_AES192_CBC:
-        fp_req = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_AES;
-        mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES256_ECB:
         fp_req = fopen("./blockcipher/testvector/AES/AES256(ECB)KAT.fax", "r");
@@ -80,15 +68,57 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
+    case MG_CRYPTO_TEST_ID_KAT_AES128_CBC:
+        fp_req = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_AES;
+        mode_ID = MG_CRYPTO_MODE_CBC;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_AES192_CBC:
+        fp_req = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_AES;
+        mode_ID = MG_CRYPTO_MODE_CBC;
+        break;
     case MG_CRYPTO_TEST_ID_KAT_AES256_CBC:
         fp_req = fopen("./blockcipher/testvector/AES/AES256(CBC)KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/AES/AES256(CBC)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
+    // case MG_CRYPTO_TEST_ID_KAT_AES128_CTR:
+    //     fp_req = fopen("./blockcipher/testvector/AES/AES128(CTR)KAT.fax", "r");
+    //     fp_rsp = fopen("./blockcipher/testvector/AES/AES128(CTR)KAT.txt", "w");
+    //     alg_ID = MG_CRYPTO_ID_AES;
+    //     mode_ID = MG_CRYPTO_MODE_CTR;
+    //     break;
+    // case MG_CRYPTO_TEST_ID_KAT_AES192_CTR:
+    //     fp_req = fopen("./blockcipher/testvector/AES/AES192(CTR)KAT.fax", "r");
+    //     fp_rsp = fopen("./blockcipher/testvector/AES/AES192(CTR)KAT.txt", "w");
+    //     alg_ID = MG_CRYPTO_ID_AES;
+    //     mode_ID = MG_CRYPTO_MODE_CTR;
+    //     break;
+    // case MG_CRYPTO_TEST_ID_KAT_AES256_CTR:
+    //     fp_req = fopen("./blockcipher/testvector/AES/AES256(CTR)KAT.fax", "r");
+    //     fp_rsp = fopen("./blockcipher/testvector/AES/AES256(CTR)KAT.txt", "w");
+    //     alg_ID = MG_CRYPTO_ID_AES;
+    //     mode_ID = MG_CRYPTO_MODE_CTR;
+    //     break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA128_ECB:
         fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_ARIA;
+        mode_ID = MG_CRYPTO_MODE_ECB;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_ARIA192_ECB:
+        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_ARIA;
+        mode_ID = MG_CRYPTO_MODE_ECB;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_ARIA256_ECB:
+        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
@@ -98,23 +128,11 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
-    case MG_CRYPTO_TEST_ID_KAT_ARIA192_ECB:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_ARIA;
-        mode_ID = MG_CRYPTO_MODE_ECB;
-        break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA192_CBC:
         fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
-        break;
-    case MG_CRYPTO_TEST_ID_KAT_ARIA256_ECB:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_ARIA;
-        mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA256_CBC:
         fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CBC)_KAT.fax", "r");
@@ -122,9 +140,39 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
+    case MG_CRYPTO_TEST_ID_KAT_ARIA128_CTR:
+        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_ARIA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_ARIA192_CTR:
+        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_ARIA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_ARIA256_CTR:
+        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_ARIA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
+        break;
     case MG_CRYPTO_TEST_ID_KAT_LEA128_ECB:
         fp_req = fopen("./blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_LEA;
+        mode_ID = MG_CRYPTO_MODE_ECB;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_LEA192_ECB:
+        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_LEA;
+        mode_ID = MG_CRYPTO_MODE_ECB;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_LEA256_ECB:
+        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
@@ -134,29 +182,35 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
-    case MG_CRYPTO_TEST_ID_KAT_LEA192_ECB:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_LEA;
-        mode_ID = MG_CRYPTO_MODE_ECB;
-        break;
     case MG_CRYPTO_TEST_ID_KAT_LEA192_CBC:
         fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
-    case MG_CRYPTO_TEST_ID_KAT_LEA256_ECB:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.txt", "w");
-        alg_ID = MG_CRYPTO_ID_LEA;
-        mode_ID = MG_CRYPTO_MODE_ECB;
-        break;
     case MG_CRYPTO_TEST_ID_KAT_LEA256_CBC:
         fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.fax", "r");
         fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_LEA128_CTR:
+        fp_req = fopen("./blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_LEA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_LEA192_CTR:
+        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_LEA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
+        break;
+    case MG_CRYPTO_TEST_ID_KAT_LEA256_CTR:
+        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.txt", "w");
+        alg_ID = MG_CRYPTO_ID_LEA;
+        mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     default:
         fprintf(stderr, "Unhandled test ID: %d\n", test_ID); // 처리되지 않은 값에 대한 경고
@@ -240,6 +294,12 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
             param.iv_len = iv_len;        // IV 길이 설정
         }
 
+        if(mode_ID == MG_CRYPTO_MODE_CTR) {
+            // 앞서 설정을 혹시 바꾸더라도 (나중에 패딩 테스트용으로)
+            // CTR은 패딩 x
+            param.paddingID = MG_CRYPTO_PADDING_NO;
+        }
+
         // 암호화 수행
         ret = MG_Crypto_Encrypt(key, key_len, alg_ID, &param, pt, pt_len, ct_res, &out_len);
         if(ret != 0) {
@@ -250,12 +310,21 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
 
         // 복호화 수행
         out_len = 0; // 유효 데이터 길이 초기화
-        ret = MG_Crypto_Decrypt(key, key_len, alg_ID, &param, ct, ct_len, pt_res, &out_len);
-        if(ret != 0) {
-            fprintf(stderr, "Decryption failed\n");
-            goto end;
+        if(mode_ID == MG_CRYPTO_MODE_CTR) {
+            // CTR은 암/복호화 때 Encrypt만 사용
+            ret = MG_Crypto_Encrypt(key, key_len, alg_ID, &param, ct, ct_len, pt_res, &out_len);
+            if(ret != 0) {
+                fprintf(stderr, "Decryption failed\n");
+                goto end;
+            }
+        } else {
+            ret = MG_Crypto_Decrypt(key, key_len, alg_ID, &param, ct, ct_len, pt_res, &out_len);
+            if(ret != 0) {
+                fprintf(stderr, "Decryption failed\n");
+                goto end;
+            }
         }
-        pt_out_len = out_len;
+        pt_out_len = out_len; // 복호화 후 유효 데이터 길이 저장 (복호화 된 평문 길이)
 
         ret = fprintf(fp_rsp, "KEY = ");
         for(uint32_t i = 0; i < key_len; i++) {
@@ -294,18 +363,18 @@ end:
 
 int main() {
 
-    // // AES ECB 테스트
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES128_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES192_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES256_ECB);
-    // // ARIA ECB 테스트
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA128_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA192_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA256_ECB);
-    // // LEA ECB 테스트
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA128_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA192_ECB);
-    // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA256_ECB);
+    // AES ECB 테스트
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES128_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES192_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES256_ECB);
+    // ARIA ECB 테스트
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA128_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA192_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA256_ECB);
+    // LEA ECB 테스트
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA128_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA192_ECB);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA256_ECB);
     // AES CBC 테스트
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES128_CBC);
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES192_CBC);
@@ -318,6 +387,18 @@ int main() {
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA128_CBC);
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA192_CBC);
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA256_CBC);
+    // // AES CTR 테스트
+    // // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES128_CTR);
+    // // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES192_CTR);
+    // // MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES256_CTR);
+    // ARIA CTR 테스트
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA128_CTR);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA192_CTR);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_ARIA256_CTR);
+    // LEA CTR 테스트
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA128_CTR);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA192_CTR);
+    MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_LEA256_CTR);
 
     return 0;
 }

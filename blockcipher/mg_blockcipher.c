@@ -109,6 +109,9 @@ int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
     case MG_CRYPTO_MODE_CBC:
         ret = MG_Crypto_BlockCipher_CBC(ctx, in, in_len, out, out_len);
         break;
+    case MG_CRYPTO_MODE_CTR:
+        ret = MG_Crypto_BlockCipher_CTR(ctx, in, in_len, out, out_len);
+        break;
     default:
         ret = MG_FAIL; // todo: change error code
         break;
@@ -165,7 +168,7 @@ int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
 }
 
 // CBC 모드 암/복호화
-// in_len에 대해 블록 단위로 암/복호화 ECB Mode 수행
+// in_len에 대해 블록 단위로 암/복호화 CBC Mode 수행
 // in_len이 block_len보다 작아도 1번은 수행함
 int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
@@ -228,6 +231,64 @@ int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
 
 end:
     memset(iv_tmp, 0, sizeof(iv_tmp)); // IV 임시 버퍼 초기화
+    return ret;
+}
+
+void inc_counter(uint8_t* ctr,
+                 size_t len) {
+    for(int j = len - 1; j >= 0; j--) {
+        if(++ctr[j] != 0)
+            break;
+    }
+}
+
+int32_t MG_Crypto_BlockCipher_CTR(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len) {
+    int32_t ret = 0;
+
+    uint32_t i = 0;
+    uint32_t block_len = ctx->block_len;
+
+    uint8_t counter[16] = {0};                 // Counter 저장할 임시 버퍼
+    memcpy(counter, ctx->param.iv, block_len); // IV 복사 (처음 블록에 사용)
+
+    if(ctx == NULL || in == NULL || out == NULL || out_len == NULL) {
+        return MG_FAIL; // todo: change error code
+    }
+
+    // 블록 단위로 암호화
+    for(i = 0; i < in_len; i += block_len) {
+        // counter 암호화
+        ret = MG_Crypto_BlockCipher_Encrypt(ctx, counter, out);
+        if(ret != MG_SUCCESS) {
+            goto end;
+        }
+        for(uint32_t j = 0; j < block_len; j++) {
+            out[j] ^= in[j]; // in과 xor
+        }
+        in += block_len;
+        out += block_len;
+        *out_len += block_len;
+        inc_counter(counter, block_len); // 카운터 증가
+    }
+
+    // 남은 블록 처리
+    if(in_len % block_len != 0) {
+        ret = MG_Crypto_BlockCipher_Encrypt(ctx, counter, out);
+        if(ret != MG_SUCCESS) {
+            goto end;
+        }
+        for(uint32_t i = 0; i < (in_len % block_len); i++) {
+            out[i] ^= in[i]; // in과 xor
+        }
+        *out_len += (in_len % block_len);
+    }
+
+end:
+    memset(counter, 0, sizeof(counter)); // counter 버퍼 초기화
     return ret;
 }
 
@@ -354,10 +415,13 @@ int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
         goto end;
     }
 
-    // 남은 블록 buf에 저장
-    ctx->buf_len = in_len % ctx->block_len;
-    if(ctx->buf_len > 0) {
-        memcpy(ctx->buf, in + in_len - ctx->buf_len, ctx->buf_len);
+    if(ctx->param.modeID != MG_CRYPTO_MODE_CTR) {
+        // CTR 모드가 아닌 경우 패딩 처리 해야함
+        // 남은 블록 buf에 저장
+        ctx->buf_len = in_len % ctx->block_len;
+        if(ctx->buf_len > 0) {
+            memcpy(ctx->buf, in + in_len - ctx->buf_len, ctx->buf_len);
+        }
     }
 
 end:
@@ -396,12 +460,10 @@ int32_t MG_Crypto_EncryptFinal(mg_cipher_ctx* ctx,
     } else {
         // 패딩 된 데이터 운영모드 처리
         ret = MG_Crypto_BlockCipher_Mode(ctx, ctx->buf, padding_len, tmp, &tmp_len);
+        if(ret != MG_SUCCESS) {
+            goto end;
+        }
     }
-
-    if(ret != MG_SUCCESS) {
-        goto end;
-    }
-
     memcpy(out + *out_len, tmp, tmp_len); // 패딩 된 데이터 복사
     *out_len += tmp_len;                  // out_len -> (유효한 데이터 길이)
 
