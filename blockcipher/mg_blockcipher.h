@@ -28,7 +28,7 @@ typedef union {
 
 typedef struct {
     mg_cipher_param param; // param 구조체 (IV, mode, padding)
-    uint32_t algID;        // 무슨 알고리즘 사용하는지 (LEA,ARIA,HIGHT)
+    uint32_t alg_ID;       // 무슨 알고리즘 사용하는지 (LEA,ARIA,HIGHT)
     uint32_t dir;          // MG_Crypto_ENCRYPT/DECRYPT
     uint32_t block_len;    // 알고리즘의 블록 크기(len) (byte수)
     key_ctx_t key_ctx;     // 알고리즘에 맞는 키 구조체
@@ -66,7 +66,7 @@ int32_t MG_Crypto_BlockCipher_Padding(uint8_t* buf,
 int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
                               const uint8_t* key,
                               const uint32_t key_len,
-                              const uint32_t algID,
+                              const uint32_t alg_ID,
                               const uint32_t dir,
                               const mg_cipher_param* param);
 
@@ -82,7 +82,7 @@ int32_t MG_Crypto_EncryptFinal(mg_cipher_ctx* ctx,
 
 int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t key_len,
-                          uint32_t algID,
+                          uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
                           uint32_t in_len,
@@ -92,7 +92,7 @@ int32_t MG_Crypto_Encrypt(const uint8_t* key,
 int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
                               const uint8_t* key,
                               const uint32_t key_len,
-                              const uint32_t algID,
+                              const uint32_t alg_ID,
                               const uint32_t dir,
                               const mg_cipher_param* param);
 
@@ -108,7 +108,7 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
 
 int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint32_t key_len,
-                          uint32_t algID,
+                          uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
                           uint32_t in_len,

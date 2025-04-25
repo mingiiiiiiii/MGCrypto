@@ -12,9 +12,9 @@
 #define MG_CRYPTO_DIR_DECRYPT 1
 
 #define MG_CRYPTO_MODE_ECB 0
-#define MG_Crypto_MODE_CBC 1
-#define MG_Crypto_MODE_CTR 2
-#define MG_Crypto_MODE_GCM 3
+#define MG_CRYPTO_MODE_CBC 1
+#define MG_CRYPTO_MODE_CTR 2
+#define MG_CRYPTO_MODE_GCM 3
 
 #define MG_CRYPTO_ID_ARIA 0
 #define MG_CRYPTO_ID_LEA 1

@@ -12,7 +12,7 @@ void RotXOR(const unsigned char* s,
             unsigned char* t);
 
 typedef struct {
-    uint32_t rk[272]; // 16 * (R + 1), MAX of R = 16
+    uint8_t rk[272]; // 16 * (R + 1), MAX of R = 16
     // uint32_t key_len; // 16, 24, 32 bytes
     uint32_t round; // 12, 14, 16
 } mg_aria_key;

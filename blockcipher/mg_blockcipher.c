@@ -27,7 +27,7 @@ int32_t MG_Crypto_BlockCipher_Encrypt(mg_cipher_ctx* ctx,
                                       const uint8_t* in,
                                       uint8_t* out) {
     int32_t ret = 0;
-    switch(ctx->algID) {
+    switch(ctx->alg_ID) {
     case MG_CRYPTO_ID_ARIA:
         ret = MG_Crypto_ARIA_Encrypt(out, in, &ctx->key_ctx.aria);
         break;
@@ -49,7 +49,7 @@ int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
                                       const uint8_t* in,
                                       uint8_t* out) {
     int32_t ret = 0;
-    switch(ctx->algID) {
+    switch(ctx->alg_ID) {
     case MG_CRYPTO_ID_ARIA:
         ret = MG_Crypto_ARIA_Decrypt(out, in, &ctx->key_ctx.aria);
         break;
@@ -71,7 +71,7 @@ int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
 //                        uint8_t* out,
 //                        int dir) {
 //     int32_t ret = 0;
-//     switch(ctx->algID) {
+//     switch(ctx->alg_ID) {
 //     case MG_CRYPTO_ID_ARIA:
 //         ret = MG_ARIA_Core(out, in, &ctx->key_ctx.aria, dir);
 //         break;
@@ -210,7 +210,7 @@ int32_t MG_Crypto_BlockCipher_Padding(uint8_t* buf,
 int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
                               const uint8_t* key,
                               const uint32_t key_len,
-                              const uint32_t algID,
+                              const uint32_t alg_ID,
                               const uint32_t dir,
                               const mg_cipher_param* param) {
     int32_t ret = 0;
@@ -229,7 +229,7 @@ int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
 
     // mg_cipher_ctx 구조체 값 설정
     memcpy(&ctx->param, param, sizeof(mg_cipher_param));
-    ctx->algID = algID;
+    ctx->alg_ID = alg_ID;
     ctx->dir = dir;
     ctx->block_len = 16; // AES, ARIA, LEA는 모두 16byte
 
@@ -240,7 +240,7 @@ int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
     memset(ctx->buf, 0, sizeof(ctx->buf)); // buffer 초기화 (이거 sizeof(ctx->buf) 얼만지 확인해보기)
     ctx->buf_len = 0;                      // buffer 초기화
 
-    switch(algID) { // algID에 따라 라운드 키 생성
+    switch(alg_ID) { // alg_ID에 따라 라운드 키 생성
     case MG_CRYPTO_ID_ARIA:
         ret = MG_Crypto_ARIA_KeySetup(&ctx->key_ctx.aria, key, key_bit, dir);
         break;
@@ -342,7 +342,7 @@ end:
 /// @brief 1회성 암호화 helper: init→update→final을 한 번에 호출
 /// @param key           : 비밀키 버퍼
 /// @param key_len       : 비밀키 길이 (byte)
-/// @param algID         : 알고리즘 ID (MG_CRYPTO_ID_…)
+/// @param alg_ID         : 알고리즘 ID (MG_CRYPTO_ID_…)
 /// @param dir           : MG_Crypto_ENCRYPT
 /// @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
 /// @param in            : 평문 버퍼
@@ -352,7 +352,7 @@ end:
 /// @return MG_SUCCESS (0) 이외는 실패 코드
 int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t key_len,
-                          uint32_t algID,
+                          uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
                           uint32_t in_len,
@@ -364,7 +364,7 @@ int32_t MG_Crypto_Encrypt(const uint8_t* key,
     uint32_t dir = MG_CRYPTO_DIR_ENCRYPT;
 
     // 1) Init
-    ret = MG_Crypto_EncryptInit(&ctx, key, key_len, algID, dir, param);
+    ret = MG_Crypto_EncryptInit(&ctx, key, key_len, alg_ID, dir, param);
     if(ret != MG_SUCCESS) {
         goto end;
     }
@@ -390,7 +390,7 @@ end:
 int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
                               const uint8_t* key,
                               const uint32_t key_len,
-                              const uint32_t algID,
+                              const uint32_t alg_ID,
                               const uint32_t dir,
                               const mg_cipher_param* param) {
     int32_t ret = 0;
@@ -409,7 +409,7 @@ int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
 
     // mg_cipher_ctx 구조체 값 설정
     memcpy(&ctx->param, param, sizeof(mg_cipher_param));
-    ctx->algID = algID;
+    ctx->alg_ID = alg_ID;
     ctx->dir = dir;
     ctx->block_len = 16; // AES, ARIA, LEA는 모두 16byte
 
@@ -420,7 +420,7 @@ int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
     memset(ctx->buf, 0, sizeof(ctx->buf)); // buffer 초기화 (이거 sizeof(ctx->buf) 얼만지 확인해보기)
     ctx->buf_len = 0;                      // buffer 초기화
 
-    switch(algID) { // algID에 따라 라운드 키 생성
+    switch(alg_ID) { // alg_ID에 따라 라운드 키 생성
     case MG_CRYPTO_ID_ARIA:
         ret = MG_Crypto_ARIA_KeySetup(&ctx->key_ctx.aria, key, key_bit, dir);
         break;
@@ -489,14 +489,13 @@ int32_t MG_Crypto_DecryptFinal(mg_cipher_ctx* ctx,
         break;
     }
 
-end:
     return ret;
 }
 
 /// @brief 1회성 복호화 helper: init→update→final을 한 번에 호출
 /// @param key           : 비밀키 버퍼
 /// @param key_len       : 비밀키 길이 (byte)
-/// @param algID         : 알고리즘 ID (MG_CRYPTO_ID_…)
+/// @param alg_ID         : 알고리즘 ID (MG_CRYPTO_ID_…)
 /// @param dir           : MG_Crypto_Decrypt
 /// @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
 /// @param in            : 암호문 버퍼
@@ -506,7 +505,7 @@ end:
 /// @return MG_SUCCESS (0) 이외는 실패 코드
 int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint32_t key_len,
-                          uint32_t algID,
+                          uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
                           uint32_t in_len,
@@ -518,7 +517,7 @@ int32_t MG_Crypto_Decrypt(const uint8_t* key,
     uint32_t dir = MG_CRYPTO_DIR_DECRYPT;
 
     // 1) Init
-    ret = MG_Crypto_DecryptInit(&ctx, key, key_len, algID, dir, param);
+    ret = MG_Crypto_DecryptInit(&ctx, key, key_len, alg_ID, dir, param);
     if(ret != MG_SUCCESS) {
         goto end;
     }
