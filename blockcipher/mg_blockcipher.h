@@ -14,10 +14,10 @@
 #include "mg_common.h"
 
 typedef struct {
-    uint8_t iv[MG_CRYPTO_MAX_IV_SIZE]; // maximum size of IV
-    uint32_t iv_len;                   // IV len (byte)
-    uint32_t modeID;                   // 무슨 운영모드
-    uint32_t paddingID;                // 무슨 패딩
+    uint8_t iv[16];     // maximum size of IV
+    uint32_t iv_len;    // IV len (byte)
+    uint32_t modeID;    // 무슨 운영모드
+    uint32_t paddingID; // 무슨 패딩
 } mg_cipher_param;
 
 typedef union {
@@ -53,6 +53,12 @@ int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
                                    uint32_t* out_len);
 
 int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len);
+
+int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
                                   const uint32_t in_len,
                                   uint8_t* out,

@@ -106,6 +106,9 @@ int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
     case MG_CRYPTO_MODE_ECB:
         ret = MG_Crypto_BlockCipher_ECB(ctx, in, in_len, out, out_len);
         break;
+    case MG_CRYPTO_MODE_CBC:
+        ret = MG_Crypto_BlockCipher_CBC(ctx, in, in_len, out, out_len);
+        break;
     default:
         ret = MG_FAIL; // todo: change error code
         break;
@@ -158,6 +161,73 @@ int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
         break;
     }
 
+    return ret;
+}
+
+// CBC 모드 암/복호화
+// in_len에 대해 블록 단위로 암/복호화 ECB Mode 수행
+// in_len이 block_len보다 작아도 1번은 수행함
+int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
+                                  const uint8_t* in,
+                                  const uint32_t in_len,
+                                  uint8_t* out,
+                                  uint32_t* out_len) {
+    int32_t ret = 0;
+
+    uint32_t i = 0;
+    uint32_t block_len = ctx->block_len;
+
+    uint8_t iv_tmp[16] = {0};                 // IV 저장할 임시 버퍼
+    memcpy(iv_tmp, ctx->param.iv, block_len); // IV 복사 (처음 블록에 사용)
+
+    if(ctx == NULL || in == NULL || out == NULL || out_len == NULL) {
+        return MG_FAIL; // todo: change error code
+    }
+
+    switch(ctx->dir) {
+    case MG_CRYPTO_DIR_ENCRYPT:
+        // 블록 단위로 암호화
+        for(i = 0; i < in_len; i += block_len) {
+            // IV와 평문 XOR
+            for(uint32_t j = 0; j < block_len; j++) {
+                iv_tmp[j] ^= in[j];
+            }
+            // IV 암호화
+            ret = MG_Crypto_BlockCipher_Encrypt(ctx, iv_tmp, out);
+            if(ret != MG_SUCCESS) {
+                goto end;
+            }
+            // 암호문을 IV로 저장
+            memcpy(iv_tmp, out, block_len);
+
+            in += block_len;
+            out += block_len;
+            *out_len += block_len;
+        }
+        break;
+    case MG_CRYPTO_DIR_DECRYPT:
+        // 블록 단위로 복호화
+        for(i = 0; i < in_len; i += block_len) {
+            ret = MG_Crypto_BlockCipher_Decrypt(ctx, in, out);
+            if(ret != MG_SUCCESS) {
+                goto end;
+            }
+            // 복호문과 IV XOR
+            for(uint32_t j = 0; j < block_len; j++) {
+                out[j] ^= iv_tmp[j];
+            }
+            // 이전 블록의 암호문은 다음 블록의 IV로 사용
+            memcpy(iv_tmp, in, block_len);
+
+            in += block_len;
+            out += block_len;
+            *out_len += block_len;
+        }
+        break;
+    }
+
+end:
+    memset(iv_tmp, 0, sizeof(iv_tmp)); // IV 임시 버퍼 초기화
     return ret;
 }
 
@@ -254,6 +324,7 @@ int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
         ret = MG_FAIL; // todo: change error code
         break;
     }
+
     return ret;
 }
 
@@ -366,18 +437,21 @@ int32_t MG_Crypto_Encrypt(const uint8_t* key,
     // 1) Init
     ret = MG_Crypto_EncryptInit(&ctx, key, key_len, alg_ID, dir, param);
     if(ret != MG_SUCCESS) {
+        fprintf(stderr, "EncryptionInit failed\n");
         goto end;
     }
 
     // 2) Update
     ret = MG_Crypto_EncryptUpdate(&ctx, in, in_len, out, out_len);
     if(ret != MG_SUCCESS) {
+        fprintf(stderr, "EncryptionUpdate failed\n");
         goto end;
     }
 
     // 3) Final (패딩 + 남은 블록 처리)
     ret = MG_Crypto_EncryptFinal(&ctx, out, out_len);
     if(ret != MG_SUCCESS) {
+        fprintf(stderr, "EncryptionFinal failed\n");
         goto end;
     }
 
