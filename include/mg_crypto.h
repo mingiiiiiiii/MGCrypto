@@ -7,7 +7,7 @@
 #define MG_FAIL -1
 #define MG_NOT_INIT -2
 
-// CIPHER
+// Cipher Mode
 #define MG_CRYPTO_DIR_ENCRYPT 0
 #define MG_CRYPTO_DIR_DECRYPT 1
 
@@ -16,10 +16,23 @@
 #define MG_CRYPTO_MODE_CTR 2
 #define MG_CRYPTO_MODE_GCM 3
 
+// Block Cipher
 #define MG_CRYPTO_ID_ARIA 0
 #define MG_CRYPTO_ID_LEA 1
 #define MG_CRYPTO_ID_HIGHT 2
-#define MG_CRYPTO_ID_AES 9
+#define MG_CRYPTO_ID_AES 3
+
+// Hash Algorithm
+#define MG_HASH_ID_SHA2_256 4
+#define MG_HASH_ID_SHA2_384 5
+#define MG_HASH_ID_SHA2_512 6
+#define MG_HASH_ID_SHA3_224 7
+#define MG_HASH_ID_SHA3_256 8
+#define MG_HASH_ID_SHA3_384 9
+#define MG_HASH_ID_SHA3_512 10
+#define MG_HASH_ID_SHAKE128 11
+#define MG_HASH_ID_SHAKE256 12
+#define MG_HASH_ID_LSH512 13
 
 #define MG_CRYPTO_MAX_IV_SIZE 16
 

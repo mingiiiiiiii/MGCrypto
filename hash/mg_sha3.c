@@ -1,29 +1,5 @@
 #include "mg_sha3.h"
 
-#define KECCAK_SPONGE_BIT 1600
-#define KECCAK_ROUND 24
-#define KECCAK_STATE_SIZE 200
-
-#define KECCAK_SHA3_224 224
-#define KECCAK_SHA3_256 256
-#define KECCAK_SHA3_384 384
-#define KECCAK_SHA3_512 512
-#define KECCAK_SHAKE128 128
-#define KECCAK_SHAKE256 256
-
-#define KECCAK_SHA3_SUFFIX 0x06
-#define KECCAK_SHAKE_SUFFIX 0x1F
-
-typedef enum {
-    SHA3_OK = 0,
-    SHA3_PARAMETER_ERROR = 1,
-} SHA3_RETRUN;
-
-typedef enum {
-    SHA3_SHAKE_NONE = 0,
-    SHA3_SHAKE_USE = 1,
-} SHA3_USE_SHAKE;
-
 static unsigned int keccakRate = 0;
 static unsigned int keccakCapacity = 0;
 static unsigned int keccakSuffix = 0;
