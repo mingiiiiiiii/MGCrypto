@@ -6,7 +6,8 @@ LDFLAGS =
 
 # Test targets
 TARGETS = blockcipher_test \
-		  hash_test
+		  hash_test \
+		  hmac_test
 DEPS = $(TARGETS:=.d)
 
 .PHONY: all clean
@@ -27,6 +28,12 @@ hash_test: \
 	hash/mg_sha2.c \
 	hash/mg_sha3.c \
 	hash/mg_lsh512.c
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+hmac_test: \
+	mac/mg_hmac_test.c \
+	mac/mg_hmac.c \
+	hash/mg_sha2.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 -include $(DEPS)
