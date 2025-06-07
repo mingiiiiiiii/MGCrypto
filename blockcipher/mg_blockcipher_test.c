@@ -51,38 +51,38 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
 
     switch(test_ID) {
     case MG_CRYPTO_TEST_ID_KAT_AES128_ECB:
-        fp_req = fopen("./blockcipher/testvector/AES/AES128(ECB)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES128(ECB)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES128(ECB)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES128(ECB)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES192_ECB:
-        fp_req = fopen("./blockcipher/testvector/AES/AES192(ECB)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES192(ECB)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES192(ECB)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES192(ECB)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES256_ECB:
-        fp_req = fopen("./blockcipher/testvector/AES/AES256(ECB)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES256(ECB)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES256(ECB)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES256(ECB)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES128_CBC:
-        fp_req = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES128(CBC)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES128(CBC)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES128(CBC)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES192_CBC:
-        fp_req = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES192(CBC)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES192(CBC)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES192(CBC)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_AES256_CBC:
-        fp_req = fopen("./blockcipher/testvector/AES/AES256(CBC)KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/AES/AES256(CBC)KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/AES/AES256(CBC)KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/AES/AES256(CBC)KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_AES;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
@@ -105,110 +105,110 @@ void MG_Crypto_Test_KAT(enum MG_CRYPTO_TEST_ID_KAT test_ID) {
     //     mode_ID = MG_CRYPTO_MODE_CTR;
     //     break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA128_ECB:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-128_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA192_ECB:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-192_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA256_ECB:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-256_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA128_CBC:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-128_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-128_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA192_CBC:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-192_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA256_CBC:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-256_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-256_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA128_CTR:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-128_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA192_CTR:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-192_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     case MG_CRYPTO_TEST_ID_KAT_ARIA256_CTR:
-        fp_req = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/ARIA/ARIA-256_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_ARIA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA128_ECB:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-128_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA192_ECB:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-192_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA256_ECB:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-256_(ECB)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_ECB;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA128_CBC:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-128_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-128_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-128_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-128_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA192_CBC:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-192_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA256_CBC:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-256_(CBC)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CBC;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA128_CTR:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-128_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA192_CTR:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-192_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;
     case MG_CRYPTO_TEST_ID_KAT_LEA256_CTR:
-        fp_req = fopen("./blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.fax", "r");
-        fp_rsp = fopen("./blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.txt", "w");
+        fp_req = fopen("../blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.fax", "r");
+        fp_rsp = fopen("../blockcipher/testvector/LEA/LEA-256_(CTR)_KAT.txt", "w");
         alg_ID = MG_CRYPTO_ID_LEA;
         mode_ID = MG_CRYPTO_MODE_CTR;
         break;

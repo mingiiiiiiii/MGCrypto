@@ -93,7 +93,7 @@ int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
 // Final에서 추가 블록 처리를 위해 따로 구현
 int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
                                    const uint8_t* in,
-                                   const uint32_t in_len,
+                                   const uint64_t in_len,
                                    uint8_t* out,
                                    uint32_t* out_len) {
     int32_t ret = 0;
@@ -125,7 +125,7 @@ int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
 // in_len이 block_len보다 작아도 1번은 수행함
 int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len) {
     int32_t ret = 0;
@@ -172,7 +172,7 @@ int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
 // in_len이 block_len보다 작아도 1번은 수행함
 int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len) {
     int32_t ret = 0;
@@ -244,7 +244,7 @@ void inc_counter(uint8_t* ctr,
 
 int32_t MG_Crypto_BlockCipher_CTR(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len) {
     int32_t ret = 0;
@@ -392,7 +392,7 @@ int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
 // Update 단계 -> 실제 암호화 수행
 int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
                                 const uint8_t* in,
-                                const uint32_t in_len,
+                                const uint64_t in_len,
                                 uint8_t* out,
                                 uint32_t* out_len) {
 
@@ -488,7 +488,7 @@ int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
-                          uint32_t in_len,
+                          uint64_t in_len,
                           uint8_t* out,
                           uint32_t* out_len) {
     int32_t ret = 0;
@@ -576,7 +576,7 @@ int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
 // Update 단계 -> 실제 암호화 수행
 int32_t MG_Crypto_DecryptUpdate(mg_cipher_ctx* ctx,
                                 const uint8_t* in,
-                                const uint32_t in_len,
+                                const uint64_t in_len,
                                 uint8_t* out,
                                 uint32_t* out_len) {
 
@@ -644,7 +644,7 @@ int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
-                          uint32_t in_len,
+                          uint64_t in_len,
                           uint8_t* out,
                           uint32_t* out_len) {
     int32_t ret = 0;

@@ -1,7 +1,7 @@
 #include "mg_hash.h"
 
 int32_t MG_Crypto_Hash(const uint8_t* in,
-                       const uint32_t in_len,
+                       const uint64_t in_len,
                        uint8_t* out,
                        const uint32_t out_len,
                        const uint32_t hash_id) {

@@ -47,19 +47,19 @@ int32_t MG_Crypto_BlockCipher_Decrypt(mg_cipher_ctx* ctx,
 
 int32_t MG_Crypto_BlockCipher_Mode(mg_cipher_ctx* ctx,
                                    const uint8_t* in,
-                                   const uint32_t in_len,
+                                   const uint64_t in_len,
                                    uint8_t* out,
                                    uint32_t* out_len);
 
 int32_t MG_Crypto_BlockCipher_ECB(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len);
 
 int32_t MG_Crypto_BlockCipher_CBC(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len);
 
@@ -68,7 +68,7 @@ void inc_counter(uint8_t* ctr,
 
 int32_t MG_Crypto_BlockCipher_CTR(mg_cipher_ctx* ctx,
                                   const uint8_t* in,
-                                  const uint32_t in_len,
+                                  const uint64_t in_len,
                                   uint8_t* out,
                                   uint32_t* out_len);
 
@@ -86,7 +86,7 @@ int32_t MG_Crypto_EncryptInit(mg_cipher_ctx* ctx,
 
 int32_t MG_Crypto_EncryptUpdate(mg_cipher_ctx* ctx,
                                 const uint8_t* in,
-                                const uint32_t in_len,
+                                const uint64_t in_len,
                                 uint8_t* out,
                                 uint32_t* out_len);
 
@@ -99,7 +99,7 @@ int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
-                          uint32_t in_len,
+                          uint64_t in_len,
                           uint8_t* out,
                           uint32_t* out_len);
 
@@ -112,7 +112,7 @@ int32_t MG_Crypto_DecryptInit(mg_cipher_ctx* ctx,
 
 int32_t MG_Crypto_DecryptUpdate(mg_cipher_ctx* ctx,
                                 const uint8_t* in,
-                                const uint32_t in_len,
+                                const uint64_t in_len,
                                 uint8_t* out,
                                 uint32_t* out_len);
 
@@ -125,7 +125,7 @@ int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint32_t alg_ID,
                           const mg_cipher_param* param,
                           const uint8_t* in,
-                          uint32_t in_len,
+                          uint64_t in_len,
                           uint8_t* out,
                           uint32_t* out_len);
 
