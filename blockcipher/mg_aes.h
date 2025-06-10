@@ -5,14 +5,14 @@
 #include <stdint.h>
 #include "mg_crypto.h"
 
-#define GETU32(pt) (((uint32_t)(pt)[0] << 24) ^ ((uint32_t)(pt)[1] << 16) ^ ((uint32_t)(pt)[2] << 8) ^ ((uint32_t)(pt)[3]))
-#define PUTU32(ct, st)                    \
-    {                                     \
-        (ct)[0] = (uint32_t)((st) >> 24); \
-        (ct)[1] = (uint32_t)((st) >> 16); \
-        (ct)[2] = (uint32_t)((st) >> 8);  \
-        (ct)[3] = (uint32_t)(st);         \
-    }
+#undef GETU32
+#if defined(BSWAP4) && !defined(STRICT_ALIGNMENT)
+    #define GETU32(p) BSWAP4(*(const uint32_t*)(p))
+    #define PUTU32(p, v) *(uint32_t*)(p) = BSWAP4(v)
+#else
+    #define GETU32(p) ((uint32_t)(p)[0] << 24 | (uint32_t)(p)[1] << 16 | (uint32_t)(p)[2] << 8 | (uint32_t)(p)[3])
+    #define PUTU32(p, v) ((p)[0] = (uint8_t)((v) >> 24), (p)[1] = (uint8_t)((v) >> 16), (p)[2] = (uint8_t)((v) >> 8), (p)[3] = (uint8_t)(v))
+#endif
 
 typedef struct {
     uint32_t rk[60]; // AES round keys

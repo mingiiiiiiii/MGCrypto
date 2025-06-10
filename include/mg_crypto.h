@@ -44,4 +44,20 @@
 #define MG_CRYPTO_PADDING_ONEZERO 2 // 패딩 최상단 1 이후 0
 #define MG_CRYPTO_PADDING_PKCS 3    // 패딩 필요한 블록 수 만큼, 3 블록 필요한 경우 03 03 03 03 패딩, 패딩이 필요없는 경우 패딩 방법을 표시하기 위해 10 10 10 10 10... 추가
 
+// Error codes
+typedef enum {
+    MG_GCM_SUCCESS = 0,
+    MG_GCM_ERROR_INVALID_KEY_LEN = -1,
+    MG_GCM_ERROR_CONTEXT_INIT = -2,
+    MG_GCM_ERROR_IV_LEN = -3,
+    MG_GCM_ERROR_AAD = -4,
+    MG_GCM_ERROR_ENCRYPT_FAILED = -5,
+    MG_GCM_ERROR_DECRYPT_FAILED = -6,
+    MG_GCM_ERROR_TAG_MISMATCH = -7,
+    MG_GCM_ERROR_FILE_IO = -8,
+    MG_GCM_ERROR_BUFFER_ALLOC = -9,
+    MG_GCM_ERROR_INVALID_PARAM = -10,
+    MG_GCM_ERROR_TAG_LEN = -11
+} mg_gcm_error_t;
+
 #endif // MG_CRYPTO_H

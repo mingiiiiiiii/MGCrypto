@@ -362,7 +362,6 @@ end:
 }
 
 int main() {
-
     // AES ECB 테스트
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES128_ECB);
     MG_Crypto_Test_KAT(MG_CRYPTO_TEST_ID_KAT_AES192_ECB);

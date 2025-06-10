@@ -21,6 +21,7 @@ LIB_SRCS = \
 	blockcipher/mg_aes.c \
 	blockcipher/mg_aria.c \
 	blockcipher/mg_lea.c \
+	blockcipher/mg_gcm.c \
 	hash/mg_hash.c \
 	hash/mg_sha2.c \
 	hash/mg_sha3.c \
