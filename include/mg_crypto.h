@@ -63,4 +63,13 @@ typedef enum {
     MG_GCM_ERROR_TAG_LEN = -11
 } mg_gcm_error_t;
 
+// CTR DRBG Flag
+//------------------------------------------------
+// The following values define either using derivation-function or not
+// when MG_Crypto_CTR_DRBG_Instantiate(..., unsigned char derivation_function_flag) is called.
+#define NON_DERIVATION_FUNCTION 0x00
+#define USE_DERIVATION_FUNCTION 0xFF
+
+#define ALGO_AES128 101
+
 #endif // MG_CRYPTO_H

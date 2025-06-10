@@ -71,9 +71,25 @@ int32_t MG_Crypto_CTR_DRBG_Generate();
 int32_t MG_Crypto_CTR_DRBG_Reseed();
 ```
 ## MGCrypto Library Example
-`libmgcrypto.so, mg_api.h, mg_crypto.h`를 디렉토리에 가지고 있어야 함
+`lib/libmgcrypto.so`, `inlcude/mg_api.h`, `include/mg_crypto.h`를 `app` 디렉토리에 복사\
+`app` 디렉토리 안에서 테스트 수행\
+필요 파일들이 모인 `app` 디렉토리를 외부로 이동시켜도 무방함
+```plaintext
+app/
+├── input_image.png
+├── libmgcrypto.so
+├── mg_api.h
+├── mg_crypto.h
+├── randombytes.c
+├── randombytes.h
+├── test1
+├── test1.c
+├── test2
+└── test2.c
+```
+### Test1 - AES128 암호화
 ```C
-// test.c
+// test1.c
 #include <stdio.h>
 
 #include "mg_api.h"
@@ -116,7 +132,17 @@ int main() {
 }
 ```
 ```bash
+# execute test1
 $ gcc -I. test1.c -L. -lmgcrypto -o test1
 $ LD_LIBRARY_PATH=. ./test1
 ```
- 
+### Test2 - KDF/DRBG/BlockCipher를 사용한 대용량 파일 암/복호화
+`GCM` 운영모드를 통해 암호화와 인증 기능 제공\
+`DRBG`를 통한 랜덤한 IV 생성\
+`KDF`를 통한 개인 키 생성\
+💡**암/복호화를 위한 파일이 존재해야함 (name = "input_image.png")**
+```bash
+# execute test2
+$ gcc -I. test2.c randombytes.c -L. -lmgcrypto -o test2
+$ LD_LIBRARY_PATH=. ./test2
+```

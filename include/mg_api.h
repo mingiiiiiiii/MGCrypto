@@ -169,12 +169,14 @@ int32_t MG_Crypto_KDF(unsigned char* password,
 /*!
  * \brief
  * CTR DRBG 구현을 위한 내부 변수 구조체 (STATE)
+ * MAX_V_LEN_IN_BYTES = 16
+ * MAX_Key_LEN_IN_BYTES = 32
  */
 typedef struct ctr_drbg_state {
     unsigned char algo; /*!< ALGO_SEED / ALGO_ARIA128 / ALGO_ARIA192 / ALGO_ARIA256 */
-    unsigned char V[MAX_V_LEN_IN_BYTES];
+    unsigned char V[16];
     int Vlen;
-    unsigned char Key[MAX_Key_LEN_IN_BYTES];
+    unsigned char Key[32];
     int Keylen;
     int seedlen;
     uint64_t reseed_counter;

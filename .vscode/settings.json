@@ -3,7 +3,8 @@
         "mg_common.h": "c",
         "mg_blockcipher.h": "c",
         "stdint.h": "c",
-        "mg_hash.h": "c"
+        "mg_hash.h": "c",
+        "mg_gcm.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

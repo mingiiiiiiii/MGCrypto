@@ -28,7 +28,11 @@ LIB_SRCS = \
 	hash/mg_sha2.c \
 	hash/mg_sha3.c \
 	hash/mg_lsh512.c \
-	mac/mg_hmac.c
+	mac/mg_hmac.c \
+	kdf/mg_kdf.c \
+	kdf/mg_pbkdf2.c \
+	drbg/mg_drbg.c
+	
 LIB_OBJS = $(LIB_SRCS:.c=.o)
 
 # .o는 중간 산출물이므로 자동 삭제
