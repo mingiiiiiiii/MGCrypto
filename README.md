@@ -4,12 +4,22 @@
 ```bash
 # in ~/MGCrypto
 $ make
-$ ./blockcipher_test
 ```
 
 ## 테스트 벡터 검증
+```bash
+$ cd test
+$ ./blockcipher_test
+``` 
 `blockcipher/testvector`에 `*.txt` 파일이 생성됨 \
 `*.fax` 파일과 비교 수행
+```bash
+$ cd test
+$ ./hash_test
+$ ./hmac_test
+$ ./kdf_test
+$ ./drbg_test
+```
 
 ## 라이브러리 생성
 `/lib`에 `libmgcrypto.so`가 생성됨 \
