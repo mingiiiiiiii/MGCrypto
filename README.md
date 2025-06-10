@@ -38,7 +38,8 @@ $ ./blockcipher_test
 - HMAC-SHA2-384
 - HMAC-SHA2-512
 
-### PBKDF
+### KDF
+- PBKDF2-HMAC-SHA256
 
 <br>
 
@@ -62,6 +63,7 @@ int32_t MG_GCM_Encrypt_File();
 int32_t MG_GCM_Decrypt_File();
 int32_t MG_Crypto_Hash();
 int32_t MG_Crypto_HMAC();
+int32_t MG_Crypto_KDF();
 ```
 ## MGCrypto Library Example
 `libmgcrypto.so, mg_api.h, mg_crypto.h`를 디렉토리에 가지고 있어야 함

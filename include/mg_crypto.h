@@ -37,6 +37,9 @@
 #define MG_HMAC_ID_HMAC_SHA2_384 15
 #define MG_HMAC_ID_HMAC_SHA2_512 16
 
+// Key Derivation Function
+#define MG_KDF_ID_PBKDF2 17
+
 #define MG_CRYPTO_MAX_IV_SIZE 16
 
 #define MG_CRYPTO_PADDING_NO 0      // 패딩 없음

@@ -38,8 +38,7 @@
 # print("ans[] = {\n" + ',\n'.join(lines) + "\n};")
 
 data = """
-36b89649a59e58bdb83daef360ff65aac2630460ca606b1bfc1eb0172e56c7c3
-f956a3a840ae99c845cf2cbfc92c09b1614375f57b59054439d8d94e898a15cf
+348c89dbcbd32b2f32d814b8116e84cf2b17347ebc1800181c
 """
 
 # 줄바꿈/공백 제거 + 2글자씩 잘라서 바이트 리스트 생성
