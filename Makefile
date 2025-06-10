@@ -1,12 +1,12 @@
 # Top-level Makefile
 
 CC = gcc
-CFLAGS = -Iinclude -Iblockcipher -Ihash -Imac -Wall -Wextra -O2 -MMD -MP
+CFLAGS = -Iinclude -Iblockcipher -Ihash -Imac -Wall -Wextra -O2 -MMD -MP -fPIC
 LDFLAGS =
 
 # 디렉토리 설정
 TEST_DIR = test
-BUILD_DIR = build
+BUILD_DIR = lib
 
 # 테스트 실행파일 목록
 TEST_TARGETS = \
