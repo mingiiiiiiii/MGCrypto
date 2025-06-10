@@ -8,6 +8,8 @@
 #ifndef MG_DRBG_H
 #define MG_DRBG_H
 
+// https://seed.kisa.or.kr/kisa/Board/23/detailView.do
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -85,7 +87,7 @@ extern "C" {
 
 //------------------------------------------------
 // The following values define either using derivation-function or not
-// when KISA_CTR_DRBG_Instantiate(..., unsigned char derivation_function_flag) is called.
+// when MG_Crypto_CTR_DRBG_Instantiate(..., unsigned char derivation_function_flag) is called.
 #define NON_DERIVATION_FUNCTION 0x00
 #define USE_DERIVATION_FUNCTION 0xFF
 
@@ -110,14 +112,14 @@ typedef struct ctr_drbg_state {
     int security_strength;
     int initialized_flag;                   // If initialized_flag = STATE_INITIALIZED_FLAG, state is already initialized.
     unsigned char derivation_function_flag; // 0x00 : non-df ,  0xFF : use df
-} KISA_CTR_DRBG_STATE;
+} MG_Crypto_CTR_DRBG_STATE;
 
 /*!
  * \brief
  * CTR DRBG 초기화 함수. 랜덤 생성을 위해서는 반드시 초기화가 필요
  *
  * \param state
- * 정보를 담고 있는 KISA_CTR_DRBG_STATE 구조체
+ * 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
  *
  * \param algo
  * 내부에서 사용될 대칭키 암호를 지정 (ALGO_SEED / ALGO_ARIA128 / ALGO_ARIA192 / ALGO_ARIA256 중 택일)
@@ -151,22 +153,22 @@ typedef struct ctr_drbg_state {
  * \returns
  * 초기화 성공 (1) / 실패 (0)
  */
-int KISA_CTR_DRBG_Instantiate(KISA_CTR_DRBG_STATE* state,
-                              unsigned char algo,
-                              unsigned char* entropy_input,
-                              int entropylen,
-                              unsigned char* nonce,
-                              int noncelen,
-                              unsigned char* personalization_string,
-                              int stringlen,
-                              unsigned char derivation_function_flag);
+int MG_Crypto_CTR_DRBG_Instantiate(MG_Crypto_CTR_DRBG_STATE* state,
+                                   unsigned char algo,
+                                   unsigned char* entropy_input,
+                                   int entropylen,
+                                   unsigned char* nonce,
+                                   int noncelen,
+                                   unsigned char* personalization_string,
+                                   int stringlen,
+                                   unsigned char derivation_function_flag);
 
 /*!
  * \brief
- * CTR DRBG 랜덤 생성 함수. 반드시 KISA_CTR_DRBG_Instantiate 구동 이후에 실행 가능
+ * CTR DRBG 랜덤 생성 함수. 반드시 MG_Crypto_CTR_DRBG_Instantiate 구동 이후에 실행 가능
  *
  * \param state
- * 정보를 담고 있는 KISA_CTR_DRBG_STATE 구조체
+ * 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
  *
  * \param output
  * 생성될 랜덤이 입력되는 버퍼
@@ -184,18 +186,18 @@ int KISA_CTR_DRBG_Instantiate(KISA_CTR_DRBG_STATE* state,
  * \returns
  * 성공 (1) / 실패 (0)
  */
-int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
-                           unsigned char* output,
-                           int request_num_of_bits,
-                           unsigned char* addtional_input,
-                           int addlen);
+int MG_Crypto_CTR_DRBG_Generate(MG_Crypto_CTR_DRBG_STATE* state,
+                                unsigned char* output,
+                                int request_num_of_bits,
+                                unsigned char* addtional_input,
+                                int addlen);
 
 /*!
  * \brief
- * CTR DRBG 재 초기화 함수(필요시). KISA_CTR_DRBG_Instantiate를 사전에 구동시킨 이후에 사용 가능
+ * CTR DRBG 재 초기화 함수(필요시). MG_Crypto_CTR_DRBG_Instantiate를 사전에 구동시킨 이후에 사용 가능
  *
  * \param state
- * 정보를 담고 있는 KISA_CTR_DRBG_STATE 구조체
+ * 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
  *
  * \param entropy_input
  * 랜덤 엔진 초기화를 위한 엔트로피 정보 입력
@@ -216,11 +218,11 @@ int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
  * \returns
  * 성공 (1) / 실패 (0)
  */
-int KISA_CTR_DRBG_Reseed(KISA_CTR_DRBG_STATE* state,
-                         unsigned char* entropy_input,
-                         int entropylen,
-                         unsigned char* additional_input,
-                         int addlen);
+int MG_Crypto_CTR_DRBG_Reseed(MG_Crypto_CTR_DRBG_STATE* state,
+                              unsigned char* entropy_input,
+                              int entropylen,
+                              unsigned char* additional_input,
+                              int addlen);
 
 #ifdef __cplusplus
 }

@@ -66,6 +66,9 @@ int32_t MG_GCM_Decrypt_File();
 int32_t MG_Crypto_Hash();
 int32_t MG_Crypto_HMAC();
 int32_t MG_Crypto_KDF();
+int32_t MG_Crypto_CTR_DRBG_Instantiate();
+int32_t MG_Crypto_CTR_DRBG_Generate();
+int32_t MG_Crypto_CTR_DRBG_Reseed();
 ```
 ## MGCrypto Library Example
 `libmgcrypto.so, mg_api.h, mg_crypto.h`를 디렉토리에 가지고 있어야 함

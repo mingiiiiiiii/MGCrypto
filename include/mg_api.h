@@ -165,3 +165,85 @@ int32_t MG_Crypto_KDF(unsigned char* password,
                       unsigned char* key,
                       int keyLen,
                       const uint32_t kdf_id);
+
+/*!
+ * \brief
+ * CTR DRBG 구현을 위한 내부 변수 구조체 (STATE)
+ */
+typedef struct ctr_drbg_state {
+    unsigned char algo; /*!< ALGO_SEED / ALGO_ARIA128 / ALGO_ARIA192 / ALGO_ARIA256 */
+    unsigned char V[MAX_V_LEN_IN_BYTES];
+    int Vlen;
+    unsigned char Key[MAX_Key_LEN_IN_BYTES];
+    int Keylen;
+    int seedlen;
+    uint64_t reseed_counter;
+    int security_strength;
+    int initialized_flag;                   // If initialized_flag = STATE_INITIALIZED_FLAG, state is already initialized.
+    unsigned char derivation_function_flag; // 0x00 : non-df ,  0xFF : use df
+} MG_Crypto_CTR_DRBG_STATE;
+
+/*!
+ * @brief CTR DRBG 초기화 함수. 랜덤 생성을 위해서는 반드시 초기화가 필요
+ * @param state 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
+ * @param algo 내부에서 사용될 대칭키 암호를 지정 (ALGO_SEED / ALGO_ARIA128 / ALGO_ARIA192 / ALGO_ARIA256 중 택일)
+ * @param entropy_input
+ * 랜덤 엔진 초기화를 위한 엔트로피 정보 입력
+ * (길이는 사용하는 대칭키 암호의 ALGO_XXX_SECURITY_STRENGTH_IN_BYTES 이상을 입력해야함)
+ * (i.e. SEED : 16 bytes / ARIA128 : 16 bytes / ARIA192 : 24 bytes / ARIA256 : 32 bytes 이상)
+ * (Derivation Function을 사용하지 않을 경우에는 ALGO_xxx_SEEDLEN_IN_BYTES 이상을 입력해야 함)
+ * @param entropylen 입력하는 엔트로피의 길이 (bytes 단위)
+ * @param nonce
+ * 랜덤 엔진 초기화를 위한 Nonce 입력
+ * (입력 블럭암호의 security strength 절반 이상을 입력해야 함)
+ * @param noncelen 입력하는 엔트로피의 길이 (bytes 단위)
+ * @param personalization_string 사용자 지정 스트링 입력(옵션). 입력하지 않을 경우 NULL
+ * @param stringlen 사용자 지정 스트링의 길이. NULL일 경우 길이를 0으로 입력
+ * @param derivation_function_flag
+ * 입력하는 엔트로피 정보가 Full Entropy일 경우 : NON_DERIVATION_FUNCTION /
+ * 입력하는 엔트로피 정보가 Full Entropy가 아닐 경우 : USE_DERIVATION_FUNCTION
+ * @returns 초기화 성공 (1) / 실패 (0)
+ */
+int MG_Crypto_CTR_DRBG_Instantiate(MG_Crypto_CTR_DRBG_STATE* state,
+                                   unsigned char algo,
+                                   unsigned char* entropy_input,
+                                   int entropylen,
+                                   unsigned char* nonce,
+                                   int noncelen,
+                                   unsigned char* personalization_string,
+                                   int stringlen,
+                                   unsigned char derivation_function_flag);
+
+/*!
+ * @brief CTR DRBG 랜덤 생성 함수. 반드시 MG_Crypto_CTR_DRBG_Instantiate 구동 이후에 실행 가능
+ * @param state 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
+ * @param output 생성될 랜덤이 입력되는 버퍼
+ * @param request_num_of_bits 생성될 랜덤의 길이 (bits) 단위
+ * @param additional_input 부가적인 랜덤시드 입력(옵션). 입력하지 않을 경우 NULL
+ * @param addlen 사용자 지정 스트링의 길이. NULL일 경우 길이를 0으로 입력
+ * @returns 성공 (1) / 실패 (0)
+ */
+int MG_Crypto_CTR_DRBG_Generate(MG_Crypto_CTR_DRBG_STATE* state,
+                                unsigned char* output,
+                                int request_num_of_bits,
+                                unsigned char* addtional_input,
+                                int addlen);
+
+/*!
+ * @brief CTR DRBG 재 초기화 함수(필요시). MG_Crypto_CTR_DRBG_Instantiate를 사전에 구동시킨 이후에 사용 가능
+ * @param state 정보를 담고 있는 MG_Crypto_CTR_DRBG_STATE 구조체
+ * @param entropy_input
+ * 랜덤 엔진 초기화를 위한 엔트로피 정보 입력
+ * (길이는 사용하는 대칭키 암호의 ALGO_XXX_SECURITY_STRENGTH_IN_BYTES 이상을 입력해야함)
+ * (i.e. SEED : 16 bytes / ARIA128 : 16 bytes / ARIA192 : 24 bytes / ARIA256 : 32 bytes 이상)
+ * (Derivation Function을 사용하지 않을 경우에는 ALGO_xxx_SEEDLEN_IN_BYTES 이상을 입력해야 함)
+ * @param entropylen 입력하는 엔트로피의 길이 (bytes 단위)
+ * @param additional_input 부가적인 랜덤시드 입력(옵션). 입력하지 않을 경우 NULL
+ * @param addlen 사용자 지정 스트링의 길이. NULL일 경우 길이를 0으로 입력
+ * @returns 성공 (1) / 실패 (0)
+ */
+int MG_Crypto_CTR_DRBG_Reseed(MG_Crypto_CTR_DRBG_STATE* state,
+                              unsigned char* entropy_input,
+                              int entropylen,
+                              unsigned char* additional_input,
+                              int addlen);

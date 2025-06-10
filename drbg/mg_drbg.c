@@ -199,8 +199,8 @@ FREE_AND_EXIT:
     return retcode;
 }
 
-int KISA_CTR_DRBG_Update(unsigned char* provided_data,
-                         KISA_CTR_DRBG_STATE* state) {
+int MG_Crypto_CTR_DRBG_Update(unsigned char* provided_data,
+                              MG_Crypto_CTR_DRBG_STATE* state) {
     unsigned char temp[MAX_SEEDLEN_IN_BYTES];
     int templen = 0;
     unsigned char* ptr;
@@ -242,15 +242,15 @@ int KISA_CTR_DRBG_Update(unsigned char* provided_data,
     return 1;
 }
 
-int KISA_CTR_DRBG_Instantiate(KISA_CTR_DRBG_STATE* state,
-                              unsigned char algo,
-                              unsigned char* entropy_input,
-                              int entropylen,
-                              unsigned char* nonce,
-                              int noncelen,
-                              unsigned char* personalization_string,
-                              int stringlen,
-                              unsigned char derivation_function_flag) {
+int MG_Crypto_CTR_DRBG_Instantiate(MG_Crypto_CTR_DRBG_STATE* state,
+                                   unsigned char algo,
+                                   unsigned char* entropy_input,
+                                   int entropylen,
+                                   unsigned char* nonce,
+                                   int noncelen,
+                                   unsigned char* personalization_string,
+                                   int stringlen,
+                                   unsigned char derivation_function_flag) {
 
     unsigned char seed_material[MAX_SEEDLEN_IN_BYTES];
     unsigned char* seed_material_in = NULL;
@@ -336,7 +336,7 @@ int KISA_CTR_DRBG_Instantiate(KISA_CTR_DRBG_STATE* state,
     memset(state->Key, 0x00, MAX_Key_LEN_IN_BYTES);
     memset(state->V, 0x00, MAX_V_LEN_IN_BYTES);
 
-    if(!KISA_CTR_DRBG_Update(seed_material, state)) {
+    if(!MG_Crypto_CTR_DRBG_Update(seed_material, state)) {
         goto FREE_AND_EXIT;
     }
 
@@ -354,11 +354,11 @@ FREE_AND_EXIT:
     return retcode;
 }
 
-int KISA_CTR_DRBG_Reseed(KISA_CTR_DRBG_STATE* state,
-                         unsigned char* entropy_input,
-                         int entropylen,
-                         unsigned char* additional_input,
-                         int addlen) {
+int MG_Crypto_CTR_DRBG_Reseed(MG_Crypto_CTR_DRBG_STATE* state,
+                              unsigned char* entropy_input,
+                              int entropylen,
+                              unsigned char* additional_input,
+                              int addlen) {
 
     unsigned char seed_material[MAX_SEEDLEN_IN_BYTES];
     unsigned char* seed_material_in = NULL;
@@ -375,7 +375,7 @@ int KISA_CTR_DRBG_Reseed(KISA_CTR_DRBG_STATE* state,
     }
 
     if((uint32_t)state->initialized_flag != STATE_INITIALIZED_FLAG) {
-        return 0; // KISA_CTR_DRBG_Instantiate(...) required
+        return 0; // MG_Crypto_CTR_DRBG_Instantiate(...) required
     }
 
     switch(state->algo) {
@@ -424,7 +424,7 @@ int KISA_CTR_DRBG_Reseed(KISA_CTR_DRBG_STATE* state,
         }
     }
 
-    if(!KISA_CTR_DRBG_Update(seed_material, state)) {
+    if(!MG_Crypto_CTR_DRBG_Update(seed_material, state)) {
         goto FREE_AND_EXIT;
     }
 
@@ -440,11 +440,11 @@ FREE_AND_EXIT:
     return retcode;
 }
 
-int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
-                           unsigned char* output,
-                           int requested_num_of_bits,
-                           unsigned char* addtional_input,
-                           int addlen) {
+int MG_Crypto_CTR_DRBG_Generate(MG_Crypto_CTR_DRBG_STATE* state,
+                                unsigned char* output,
+                                int requested_num_of_bits,
+                                unsigned char* addtional_input,
+                                int addlen) {
     mg_aes_key aeskey;
 
     unsigned char addtional_input_for_seed[MAX_SEEDLEN_IN_BYTES];
@@ -476,7 +476,7 @@ int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
                 return 0;
             }
 
-            if(!KISA_CTR_DRBG_Update(addtional_input_for_seed, state)) {
+            if(!MG_Crypto_CTR_DRBG_Update(addtional_input_for_seed, state)) {
                 memset(addtional_input_for_seed, 0x00, MAX_SEEDLEN_IN_BYTES);
                 return 0;
             }
@@ -484,7 +484,7 @@ int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
             memset(addtional_input_for_seed, 0x00, MAX_SEEDLEN_IN_BYTES);
             memcpy(addtional_input_for_seed, addtional_input, addlen);
 
-            if(!KISA_CTR_DRBG_Update(addtional_input_for_seed, state)) {
+            if(!MG_Crypto_CTR_DRBG_Update(addtional_input_for_seed, state)) {
                 memset(addtional_input_for_seed, 0x00, MAX_SEEDLEN_IN_BYTES);
                 return 0;
             }
@@ -516,7 +516,7 @@ int KISA_CTR_DRBG_Generate(KISA_CTR_DRBG_STATE* state,
     if(requested_num_of_bits % 8 != 0)
         output[request_num_of_bytes - 1] = temp[request_num_of_bytes - 1] & (0x000000FF & (0xFF << (8 - (requested_num_of_bits % 8))));
 
-    if(!KISA_CTR_DRBG_Update(addtional_input_for_seed, state)) {
+    if(!MG_Crypto_CTR_DRBG_Update(addtional_input_for_seed, state)) {
         goto FREE_AND_EXIT;
     }
 
