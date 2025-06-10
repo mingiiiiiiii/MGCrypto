@@ -1,0 +1,30 @@
+https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program/random-number-generators#DRBG
+
+[AES-128 use df]
+[PredictionResistance = True]
+[EntropyInputLen = 128]
+[NonceLen = 64]
+[PersonalizationStringLen = 128]
+[AdditionalInputLen = 128]
+[ReturnedBitsLen = 512]
+
+COUNT = 0
+EntropyInput = d3454b257ecd83c3be96b8f5847be6eb
+Nonce = b241f1295df4d999
+PersonalizationString = 6e8d9b4dd8d17ec91111a4cb93ba4f25
+** INSTANTIATE:
+	Key = ac034531ca77eb0ec368a863242f2409
+	V   = 8c705694c53abea2e8c42cb23b5d531f
+
+AdditionalInput = 0bdeb888604db3a7b615b5bacbe42500
+EntropyInputPR = 66d578535e2b4b41560298fe7fd9e240
+** GENERATE (FIRST CALL):
+	Key = 05f1c89ddddab1450ce5c915ad69e1db
+	V   = e6e8152f34dc19b67cfaf386ca965c8a
+
+AdditionalInput = 79f38dd58d835f1ae58955bbdb500cfc
+EntropyInputPR = 1d97e89c603915207a6560520c4feb00
+ReturnedBits = 267549079e946a1ea72416ab4f57bc9c7ecde73e8c5c7993e2ccde38f854edb4c43d5766da71da7013ae71f4366b8d1cfa196d3f0faad2ac98c425c56adbf312
+** GENERATE (SECOND CALL):
+	Key = a64a7e67f30c536881385ebe7d0be06e
+	V   = 9fdbee32f2a84b24b8d5ce00ce6fcdc7

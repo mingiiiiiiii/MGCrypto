@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include "mg_crypto.h"
 
+#define AES_BLOCK_SIZE 16
+
 #undef GETU32
 #if defined(BSWAP4) && !defined(STRICT_ALIGNMENT)
     #define GETU32(p) BSWAP4(*(const uint32_t*)(p))

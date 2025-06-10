@@ -13,7 +13,8 @@ TEST_TARGETS = \
 	$(TEST_DIR)/blockcipher_test \
 	$(TEST_DIR)/hash_test \
 	$(TEST_DIR)/hmac_test \
-	$(TEST_DIR)/kdf_test
+	$(TEST_DIR)/kdf_test \
+	$(TEST_DIR)/drbg_test
 
 # 동적 라이브러리 설정
 LIB_NAME = $(BUILD_DIR)/libmgcrypto.so
@@ -80,6 +81,14 @@ $(TEST_DIR)/kdf_test:
 		kdf/mg_pbkdf2.c \
 		mac/mg_hmac.c \
 		hash/mg_sha2.c \
+		$(LDFLAGS)
+
+$(TEST_DIR)/drbg_test:
+	@mkdir -p $(TEST_DIR)
+	$(CC) $(CFLAGS) -o $@ \
+		drbg/mg_drbg_test.c \
+		drbg/mg_drbg.c \
+		blockcipher/mg_aes.c \
 		$(LDFLAGS)
 
 # 동적 라이브러리

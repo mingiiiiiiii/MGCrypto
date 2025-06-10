@@ -41,11 +41,13 @@ $ ./blockcipher_test
 ### KDF
 - PBKDF2-HMAC-SHA256
 
+### DRBG
+- AES128-CTR-DRBG
+
 <br>
 
 <!-- ### Public,,,
 
-### DRBG...
 
 ### RSA
 
