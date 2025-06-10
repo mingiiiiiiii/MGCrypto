@@ -10,6 +10,19 @@ typedef struct {
     uint32_t paddingID; // 무슨 패딩
 } mg_cipher_param;
 
+/**
+ * @brief 1회성 복호화 helper: init→update→final을 한 번에 호출
+ *
+ * @param key           : 비밀키 버퍼
+ * @param key_len       : 비밀키 길이 (byte)
+ * @param alg_ID        : 알고리즘 ID (MG_CRYPTO_ID_…)
+ * @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
+ * @param in            : 암호문 버퍼
+ * @param in_len        : 암호문 길이 (byte)
+ * @param out           : 복호화된 평문 출력 버퍼
+ * @param out_len       : [out] 실제 복호화되어 출력된 평문 길이 (byte)
+ * @return MG_SUCCESS (0) 이외는 실패 코드
+ */
 int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint32_t key_len,
                           uint32_t alg_ID,
@@ -19,6 +32,20 @@ int32_t MG_Crypto_Decrypt(const uint8_t* key,
                           uint8_t* out,
                           uint32_t* out_len);
 
+/**
+ * @brief 1회성 암호화 helper: init→update→final을 한 번에 호출
+ *
+ * @param key           : 비밀키 버퍼
+ * @param key_len       : 비밀키 길이 (byte)
+ * @param alg_ID        : 알고리즘 ID (MG_CRYPTO_ID_…)
+ * @param dir           : MG_Crypto_ENCRYPT
+ * @param param         : 암호 파라미터 (IV, 모드, 패딩 등)
+ * @param in            : 평문 버퍼
+ * @param in_len        : 평문 길이 (byte)
+ * @param out           : 암호문 출력 버퍼
+ * @param out_len       : [out] 실제 출력된 암호문 길이 (byte)
+ * @return MG_SUCCESS (0) 이외는 실패 코드
+ */
 int32_t MG_Crypto_Encrypt(const uint8_t* key,
                           uint32_t key_len,
                           uint32_t alg_ID,
@@ -84,6 +111,16 @@ int mg_gcm_decrypt_file(const unsigned char* key,
                         FILE* output_file);
 
 // "mg_hash.h"
+/**
+ * @brief 암호학적 HASH 연산 수행
+ *
+ * @param in 입력 데이터 버퍼
+ * @param in_len 입력 데이터 길이 (byte)
+ * @param out 해시 결과를 저장할 출력 버퍼
+ * @param out_len 출력 버퍼의 크기 (byte)
+ * @param hash_id 사용할 해시 알고리즘의 ID (예: SHA-256, SHA-512 등)
+ * @return MG_SUCCESS (0) 이외는 실패 코드
+ */
 int32_t MG_Crypto_Hash(const uint8_t* in,
                        const uint64_t in_len,
                        uint8_t* out,
@@ -91,6 +128,17 @@ int32_t MG_Crypto_Hash(const uint8_t* in,
                        const uint32_t hash_id);
 
 // "mg_hmac.h"
+/**
+ * @brief HMAC (Hash-based Message Authentication Code) 생성
+ *
+ * @param key HMAC 키 버퍼
+ * @param keylen HMAC 키 길이 (byte)
+ * @param msg 입력 메시지 버퍼
+ * @param msglen 입력 메시지 길이 (byte)
+ * @param hmac 출력 HMAC 결과를 저장할 버퍼
+ * @param hmac_id 사용할 HMAC 알고리즘의 ID (예: SHA-256, SHA-512 등)
+ * @return MG_SUCCESS (0) 이외는 실패 코드
+ */
 int32_t MG_Crypto_HMAC(const uint8_t* key,
                        const uint32_t keylen,
                        const uint8_t* msg,
