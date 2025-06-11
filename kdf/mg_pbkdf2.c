@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <malloc.h>
+// #include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include "mg_sha2.h"
 #include "mg_hmac.h"
