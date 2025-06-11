@@ -145,6 +145,9 @@ int main() {
 # execute test1
 $ gcc -I. test1.c -L. -lmgcrypto -o test1
 $ LD_LIBRARY_PATH=. ./test1
+
+# in MacOS
+$ DYLD_LIBRARY_PATH=. ./test1
 ```
 ### Test2 - KDF/DRBG/BlockCipher를 사용한 대용량 파일 암/복호화
 `GCM` 운영모드를 통해 암호화와 인증 기능 제공\
@@ -155,4 +158,7 @@ $ LD_LIBRARY_PATH=. ./test1
 # execute test2
 $ gcc -I. test2.c randombytes.c -L. -lmgcrypto -o test2
 $ LD_LIBRARY_PATH=. ./test2
+
+# in MacOS
+$ DYLD_LIBRARY_PATH=. ./test1
 ```
